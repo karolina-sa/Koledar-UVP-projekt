@@ -30,12 +30,8 @@ def izberi_datum():
 
 # OPRAVILA:
 
-@bottle.get('/dodaj-opravilo/')
-def dodaj_opravilo_get():
-    return bottle.template('dodaj_opravilo.html') 
-
 @bottle.post('/dodaj-opravilo/')
-def dodaj_opravilo_post():
+def dodaj_opravilo():
     ime = bottle.request.forms.getunicode("ime")
     opis = bottle.request.forms.getunicode("opis")
     opravilo = Opravilo(ime, opis)
