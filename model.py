@@ -1,13 +1,4 @@
 import json
-import calendar
-
-
-class CustomHTMLCal(calendar.HTMLCalendar):
-    cssclasses = [style + " text-nowrap" for style in
-                  calendar.HTMLCalendar.cssclasses]
-    cssclass_month_head = "text-center month-head"
-    cssclass_month = "month"
-    cssclass_year = "year"
 
 # MANJKA ZA BELEŽENJE V DATUM
 
@@ -63,7 +54,7 @@ class Stanje:
         with open(ime_datoteke) as dat:
             slovar = json.load(dat)
             return Stanje.iz_slovarja(slovar)
-
+    
     def preveri_podatke_novega_spiska(self, ime):
         napake = {}
         if not ime:
@@ -86,7 +77,7 @@ class Spisek:
     def v_slovar(self):
         return {
             "ime": self.ime,
-            "opravila": [opravilo.v_slovar() for opravilo in self.opravila],
+            "opravila": [Opravilo.v_slovar() for opravilo in self.opravila],
         }
 
     @staticmethod
