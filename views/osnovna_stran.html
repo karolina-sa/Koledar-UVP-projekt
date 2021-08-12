@@ -2,16 +2,33 @@
 
 <!-- NASLOVI: -->
 <br><br>
-<h1 style="text-align: center; font-size: 60px; margin: 0ex; padding: 0ex;"><b>KOLEDAR</b></h1>
-<p style="text-align: center; margin: 0ex; padding: 0ex; font-size: 35px; font-family:'Monotype Corsiva','Apple Chancery','ITC Zapf Chancery','URW Chancery L',cursive;"
-    >koledar obveznosti & dnevnik</p><br><br>
+<div class="p-3 mb-2 bg-light text-dark">
+    <h1 style="text-align: center; font-size: 60px; margin: 0ex; padding: 0ex;">
+        <b>KOLEDAR</b></h1>
+    <p style="text-align: center; margin: 0ex; padding: 0ex; font-size: 35px; font-family:'Monotype Corsiva','Apple Chancery','ITC Zapf Chancery','URW Chancery L',cursive;"
+        >koledar obveznosti & dnevnik</p>
+</div><br><br>
 
 <!-- DATEPICKER: -->
-<form action="/izberi-datum/">
-    <label for="datum">Datum:</label>
-    <input type="date" class="form-control col-xs-4" id="datum" name="datum">
-    <input type="submit" class="btn btn-outline-dark" value="Izberi">
-</form><br><br>
+<div class="p-3 mb-2 bg-light text-dark">
+Datum:
+    <form action="/izberi-datum/"> 
+        <table>
+            <tr>
+                <td>
+                    <form>
+                        <input type="date" class="form-control col-xs-4" name="datum" style="width: 30ex;">
+                    </form>
+                </td>
+                <td>
+                    <form>
+                        <button class="btn btn-outline-dark">Izberi</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div><br><br>
 
 <!-- IZBIRA MED OBVAZNOSTMI IN DNEVNIKOM: -->
 <table>
@@ -30,27 +47,37 @@
 </table><br>
 
 <!-- VRSTICA S SPISKI: -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div>
-        <form method="POST" action="/zamenjaj-aktualni-spisek/">
-            <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                % for indeks, spisek in enumerate(spiski):
-                % if spisek == aktualni_spisek:
-                <button class="btn btn-outline-secondary active" name="indeks" value="{{indeks}}">{{spisek.ime}}</button>
-                % else:
-                <button class="btn btn-outline-secondary" name="indeks" value="{{indeks}}">{{spisek.ime}}</button>
-                % end
-                % end
-            </div>
-        </form>
-    </div>
-    <div>
-        <form method="POST" action="/dodaj-spisek/" class="d-flex">
-            <input type="text" name="ime" placeholder="Ime novega spiska">
-            <button class="btn btn-outline-dark" required="required" pattern="[A-Za-z0-9]{1,20}">Dodaj spisek</button>
-        </form>
-    </div>
-</nav><br><br>
+<div class="p-3 mb-2 bg-light text-dark">
+    <nav class="navbar" style="height: 7ex;">
+        <div>
+            <form method="POST" action="/zamenjaj-aktualni-spisek/">
+                <div class="btn-group-toggle" data-toggle="buttons">
+                    % for indeks, spisek in enumerate(spiski):
+                    % if spisek == aktualni_spisek:
+                    <button class="btn btn-outline-dark active" name="indeks" value="{{indeks}}">{{spisek.ime}}</button>
+                    % else:
+                    <button class="btn btn-outline-dark" name="indeks" value="{{indeks}}">{{spisek.ime}}</button>
+                    % end
+                    % end
+                </div>
+            </form>
+        </div>
+        <div>
+            <table>
+                <tr>
+                    <form method="POST" action="/dodaj-spisek/" class="d-flex">
+                        <td>
+                            <input type="text" class="form-control" name="ime" placeholder="Ime novega spiska">
+                        </td>
+                        <td>
+                            <button class="btn btn-outline-dark">Dodaj</button>
+                        </td>
+                    </form>
+                </tr>   
+            </table>
+        </div>
+    </nav>
+</div><br><br>
 
 % if aktualni_spisek:
 
@@ -68,11 +95,13 @@
                     <form method="POST" action="/dodaj-opravilo/">
                         <div>
                             <label class="label">Ime:</label><br>
-                            <input class="input" type="text" name="ime" placeholder="Ime dogodka/opravila/načrta"><br><br>
+                            <input class="form-control" id="exampleFormControlInput1" type="text" name="ime" placeholder="Ime dogodka/opravila/načrta">
+                            <small id="emailHelp" class="form-text text-muted">Ime je obvezno.</small><br><br>
                         </div>
                         <div>
                             <label class="label">Opis:</label><br>
-                            <textarea type="text" class="input" rows="4" cols="47" name="opis" form="usrform" placeholder="Opis dogodka/opravila/načrta"></textarea><br>
+                            <textarea type="text" class="form-control" id="exampleFormControlTextarea1" rows="7" name="opis" placeholder="Opis dogodka/opravila/načrta"></textarea>
+                            <small id="emailHelp" class="form-text text-muted">Opis ni obvezen.</small>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -84,8 +113,6 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-
-
 
 
 % else:

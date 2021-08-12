@@ -25,8 +25,8 @@ def osnovna_stran():
 
 @bottle.get('/izberi-datum/')
 def izberi_datum():
+    datum = bottle.request.forms.getunicode("datum")
     return bottle.redirect('/')
-
 
 # OPRAVILA:
 

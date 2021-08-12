@@ -14,7 +14,7 @@ class Stanje:
         if not self.aktualni_spisek:
             self.aktualni_spisek = spisek
     
-    def pobrisi_spisek(self, spisek):
+    def pobrisi_spisek(self, spisek):        # VKLJUČI!!!!!!
         self.spiski.remove(spisek)
     
     def zamenjaj_spisek(self, spisek):
@@ -23,7 +23,7 @@ class Stanje:
     def dodaj_opravilo(self, opravilo, spisek):
         spisek.dodaj_opravilo(opravilo)
     
-    def pobrisi_opravilo(self, opravilo, spisek):
+    def pobrisi_opravilo(self, opravilo, spisek):         # VKLJUČI!!!!!!
         self.aktualni_spisek.pobrisi_opravilo(opravilo)
 
     def v_slovar(self):
