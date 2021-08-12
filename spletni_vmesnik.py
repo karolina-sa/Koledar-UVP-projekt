@@ -35,8 +35,9 @@ def dodaj_opravilo():
     ime = bottle.request.forms.getunicode("ime")
     opis = bottle.request.forms.getunicode("opis")
     opravilo = Opravilo(ime, opis)
-    stanje.dodaj_opravilo(opravilo)
-    stanje.shrani_v_datoteko(IME_DATOTEKE)
+    if ime not in 100000*' ':
+        stanje.dodaj_opravilo(opravilo)
+        stanje.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect("/")
 
 
@@ -46,18 +47,10 @@ def dodaj_opravilo():
 def dodaj_spisek():
     ime = bottle.request.forms.getunicode("ime")
     spisek = Spisek(ime)
-    stanje.dodaj_spisek(spisek)
-    stanje.shrani_v_datoteko(IME_DATOTEKE)
+    if ime not in 100000*' ':
+        stanje.dodaj_spisek(spisek)
+        stanje.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect('/')
-
-@bottle.post("/dodaj-spisek/")
-def dodaj_spisek_post():
-    ime = bottle.request.forms.getunicode("ime")
-    spisek = Spisek(ime)
-    stanje.dodaj_spisek(spisek)
-    stanje.shrani_v_datoteko(IME_DATOTEKE)
-    bottle.redirect("/")
-
 
 @bottle.post('/zamenjaj-aktualni-spisek/')
 def zamenjaj_aktualni_spisek():
@@ -67,9 +60,6 @@ def zamenjaj_aktualni_spisek():
     stanje.aktualni_spisek = spisek
     stanje.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect("/")
-
-
-
 
 #========================================================================================================================
 

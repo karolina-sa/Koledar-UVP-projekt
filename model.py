@@ -55,15 +55,6 @@ class Stanje:
             slovar = json.load(dat)
             return Stanje.iz_slovarja(slovar)
     
-    def preveri_podatke_novega_spiska(self, ime):
-        napake = {}
-        if not ime:
-            napake["ime"] = "Ime mora biti neprazno."
-        for spisek in self.spiski:
-            if spisek.ime == ime:
-                napake["ime"] = "Ime je že zasedeno."
-        return napake
-
 # ========================================================================================================================
 
 class Spisek:
