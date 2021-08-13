@@ -10,25 +10,24 @@
 </div><br><br>
 
 <!-- DATEPICKER: -->
-<div class="p-3 mb-2 bg-light text-dark">
 Datum:
-    <form action="/izberi-datum/"> 
-        <table>
-            <tr>
-                <td>
-                    <form>
-                        <input type="date" class="form-control col-xs-4" name="datum" style="width: 30ex;">
-                    </form>
-                </td>
-                <td>
-                    <form>
-                        <button class="btn btn-outline-dark">Izberi</button>
-                    </form>
-                </td>
-            </tr>
-        </table>
-    </form>
-</div><br><br>
+<form action="/izberi-datum/"> 
+    <table>
+        <tr>
+            <td>
+                <form>
+                    <input type="date" class="form-control col-xs-4" name="datum" style="width: 30ex;">
+                </form>
+            </td>
+            <td>
+                <form>
+                    <button class="btn btn-outline-dark">Izberi</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</form>
+<br><br>
 
 <!-- IZBIRA MED OBVAZNOSTMI IN DNEVNIKOM: -->
 <table>
@@ -47,37 +46,40 @@ Datum:
 </table><br>
 
 <!-- VRSTICA S SPISKI: -->
-<div class="p-3 mb-2 bg-light text-dark">
-    <nav class="navbar" style="height: 7ex;">
-        <div>
-            <form method="POST" action="/zamenjaj-aktualni-spisek/">
-                <div class="btn-group-toggle" data-toggle="buttons">
-                    % for indeks, spisek in enumerate(spiski):
-                    % if spisek == aktualni_spisek:
-                    <button class="btn btn-outline-dark active" name="indeks" value="{{indeks}}">{{spisek.ime}}</button>
-                    % else:
-                    <button class="btn btn-outline-dark" name="indeks" value="{{indeks}}">{{spisek.ime}}</button>
-                    % end
-                    % end
-                </div>
-            </form>
-        </div>
-        <div>
-            <table>
-                <tr>
-                    <form method="POST" action="/dodaj-spisek/" class="d-flex">
-                        <td>
-                            <input type="text" class="form-control" name="ime" placeholder="Ime novega spiska">
-                        </td>
-                        <td>
-                            <button class="btn btn-outline-dark">Dodaj</button>
-                        </td>
-                    </form>
-                </tr>   
-            </table>
-        </div>
-    </nav>
-</div>
+<nav class="navbar navbar-light bg-light" style="height: 9ex;">
+    <div>
+        <form method="POST" action="/zamenjaj-aktualni-spisek/">
+            <div class="btn-group-toggle" data-toggle="buttons">
+                % for indeks, spisek in enumerate(spiski):
+                % if spisek == aktualni_spisek:
+                <button class="btn btn-outline-dark active" name="indeks" value="{{indeks}}">{{spisek.ime}}</button>
+                % else:
+                <button class="btn btn-outline-dark" name="indeks" value="{{indeks}}">{{spisek.ime}}</button>
+                % end
+                % end
+            </div>
+        </form>
+    </div>
+    <div>
+        <table>
+            <tr>
+                <form method="POST" action="/dodaj-spisek/" class="d-flex">
+                    <td>
+                        <input type="text" class="form-control" name="ime" placeholder="Ime novega spiska">
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-dark">Dodaj</button>
+                    </td>
+                </form>
+                    <td>
+                        <form method="POST" action="/izbrisi-spisek/">
+                            <button class="btn btn-outline-dark">Izbriši aktualni spisek {{aktualni_spisek.ime}}</button>
+                        </form>
+                    </td>
+            </tr>   
+        </table>
+    </div>
+</nav>
 
 % if aktualni_spisek:
 
@@ -119,17 +121,25 @@ Datum:
 
 <div class="card">
     <div class="card-header">
-        <h6 class="mb-0" style="font-weight: bold; text-transform: uppercase;">
-            {{ opravilo.ime }}
-        </h6>
-        <form method="POST" action="/izbrisi-opravilo/">
-            <button class="btn" name="indeks" value="{{indeks}}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                </svg>
-            </button>
-        </form>
+        <table style="width: 100%;">
+            <tr>
+                <td style="width: 50%;">
+                    <p class="mb-0" style="font-weight: bold; text-transform: uppercase;">
+                        {{ opravilo.ime }}
+                    </p>          
+                </td>
+                <td style="text-align: right;">
+                    <form method="POST" action="/izbrisi-opravilo/">
+                        <button class="btn" name="indeks" value="{{indeks}}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                            </svg>
+                        </button>
+                    </form>           
+                </td>
+            </tr>
+        </table>
     </div>
     <div class="card-body">
         {{ opravilo.opis }}

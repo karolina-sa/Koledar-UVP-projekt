@@ -60,6 +60,13 @@ def dodaj_spisek():
         stanje.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect('/')
 
+# @bottle.post('/izbrisi-spisek/')
+# def izbrisi_spisek():
+#     spisek = bottle.request.forms.getunicode("aktualni_spisek.ime")
+#     stanje.izbrisi_spisek(spisek)
+#     stanje.shrani_v_datoteko(IME_DATOTEKE)
+#     bottle.redirect('/')
+
 @bottle.post('/zamenjaj-aktualni-spisek/')
 def zamenjaj_aktualni_spisek():
     print(dict(bottle.request.forms))
