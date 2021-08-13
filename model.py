@@ -14,17 +14,17 @@ class Stanje:
         if not self.aktualni_spisek:
             self.aktualni_spisek = spisek
     
-    def pobrisi_spisek(self, spisek):        # VKLJUČI!!!!!!
+    def izbrisi_spisek(self, spisek):        # VKLJUČI!!!!!!
         self.spiski.remove(spisek)
     
     def zamenjaj_spisek(self, spisek):
         self.aktualni_spisek = spisek
     
-    def dodaj_opravilo(self, opravilo, spisek):
-        spisek.dodaj_opravilo(opravilo)
+    def dodaj_opravilo(self, opravilo):
+        self.aktualni_spisek.dodaj_opravilo(opravilo)
     
-    def pobrisi_opravilo(self, opravilo, spisek):         # VKLJUČI!!!!!!
-        self.aktualni_spisek.pobrisi_opravilo(opravilo)
+    def izbrisi_opravilo(self, opravilo):
+        self.aktualni_spisek.izbrisi_opravilo(opravilo)
 
     def v_slovar(self):
         return {
@@ -64,11 +64,14 @@ class Spisek:
 
     def dodaj_opravilo(self, opravilo):
         self.opravila.append(opravilo)
+    
+    def izbrisi_opravilo(self, opravilo):
+        self.opravila.remove(opravilo)
 
     def v_slovar(self):
         return {
             "ime": self.ime,
-            "opravila": [Opravilo.v_slovar() for opravilo in self.opravila],
+            "opravila": [opravilo.v_slovar() for opravilo in self.opravila],
         }
 
     @staticmethod

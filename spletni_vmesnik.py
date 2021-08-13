@@ -22,11 +22,11 @@ def osnovna_stran():
         aktualni_spisek=stanje.aktualni_spisek
     )
 
-
 @bottle.get('/izberi-datum/')
 def izberi_datum():
     datum = bottle.request.forms.getunicode("datum")
     return bottle.redirect('/')
+
 
 # OPRAVILA:
 
@@ -38,7 +38,15 @@ def dodaj_opravilo():
     if ime not in 100000*' ':
         stanje.dodaj_opravilo(opravilo)
         stanje.shrani_v_datoteko(IME_DATOTEKE)
-    bottle.redirect("/")
+    bottle.redirect('/')
+
+@bottle.post('/izbrisi-opravilo/')
+def izbrisi_opravilo():
+    indeks = bottle.request.forms.getunicode("indeks")
+    opravilo = stanje.aktualni_spisek.opravila[int(indeks)]
+    stanje.izbrisi_opravilo(opravilo)
+    stanje.shrani_v_datoteko(IME_DATOTEKE)
+    bottle.redirect('/')
 
 
 # SPISKI:
