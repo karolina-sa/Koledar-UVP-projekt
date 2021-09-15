@@ -1,15 +1,13 @@
-import bottle
-from model import Stanje, Spisek, Opravilo
-import model
-from datetime import datetime
-import calendar
 import json
+
+import bottle
+from model import Koledar, Opravilo, Spisek, Stanje
 
 IME_DATOTEKE = "stanje.json"
 try:
-    stanje = Stanje.preberi_iz_datoteke(IME_DATOTEKE)
+    koledar = Koledar.preberi_iz_datoteke(IME_DATOTEKE)
 except FileNotFoundError:
-    stanje = Stanje()
+    koledar = Koledar()
 
 #========================================================================================================================
 
@@ -17,16 +15,23 @@ except FileNotFoundError:
 def osnovna_stran():
     return bottle.template(
         "osnovna_stran.html",
-        opravila=stanje.aktualni_spisek.opravila if stanje.aktualni_spisek else [],
-        spiski=stanje.spiski,
-        aktualni_spisek=stanje.aktualni_spisek
+        datumi=koledar.datumi,
+        aktualni_datum=koledar.aktualni_datum,
+        opravila=koledar.datumi[koledar.aktualni_datum].aktualni_spisek.opravila if koledar.datumi[koledar.aktualni_datum].aktualni_spisek else [],
+        spiski=koledar.datumi[koledar.aktualni_datum].spiski,  
+        aktualni_spisek=koledar.datumi[koledar.aktualni_datum].aktualni_spisek
     )
 
-@bottle.get('/izberi-datum/')
-def izberi_datum():
+@bottle.post('/zamenjaj-datum/')
+def zamenjaj_datum():
+    print(dict(bottle.request.forms))
     datum = bottle.request.forms.getunicode("datum")
-    return bottle.redirect('/')
-
+    if "-" in datum:
+        if datum not in koledar.datumi.keys():
+            koledar.dodaj_datum(datum)
+        koledar.aktualni_datum = datum
+        koledar.shrani_v_datoteko(IME_DATOTEKE)
+    bottle.redirect('/')
 
 # OPRAVILA:
 
@@ -35,17 +40,17 @@ def dodaj_opravilo():
     ime = bottle.request.forms.getunicode("ime")
     opis = bottle.request.forms.getunicode("opis")
     opravilo = Opravilo(ime, opis)
-    if ime not in 100000*' ':
-        stanje.dodaj_opravilo(opravilo)
-        stanje.shrani_v_datoteko(IME_DATOTEKE)
+    if ime not in 1000000*' ':
+        koledar.datumi[koledar.aktualni_datum].dodaj_opravilo(opravilo)
+        koledar.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect('/')
 
 @bottle.post('/izbrisi-opravilo/')
 def izbrisi_opravilo():
     indeks = bottle.request.forms.getunicode("indeks")
-    opravilo = stanje.aktualni_spisek.opravila[int(indeks)]
-    stanje.izbrisi_opravilo(opravilo)
-    stanje.shrani_v_datoteko(IME_DATOTEKE)
+    opravilo = koledar.datumi[koledar.aktualni_datum].aktualni_spisek.opravila[int(indeks)]
+    koledar.datumi[koledar.aktualni_datum].izbrisi_opravilo(opravilo)
+    koledar.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect('/')
 
 
@@ -55,14 +60,15 @@ def izbrisi_opravilo():
 def dodaj_spisek():
     ime = bottle.request.forms.getunicode("ime")
     spisek = Spisek(ime)
-    if ime not in 100000*' ':
-        stanje.dodaj_spisek(spisek)
-        stanje.shrani_v_datoteko(IME_DATOTEKE)
+    if ime not in 1000000*' ':
+        koledar.datumi[koledar.aktualni_datum].dodaj_spisek(spisek)
+        koledar.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect('/')
 
-# @bottle.post('/izbrisi-spisek/')
+# @bottle.post('/izbrisi-spisek/')        # NE DELA !!!!!!!!!!!!!!!!!!1!!
 # def izbrisi_spisek():
-#     spisek = bottle.request.forms.getunicode("aktualni_spisek.ime")
+#     # spisek = stanje.spiski[stanje.aktualni_spisek]
+#     spisek = stanje.aktualni_spisek             # potrebno je najti kateri spisek naj izbriše!
 #     stanje.izbrisi_spisek(spisek)
 #     stanje.shrani_v_datoteko(IME_DATOTEKE)
 #     bottle.redirect('/')
@@ -71,9 +77,9 @@ def dodaj_spisek():
 def zamenjaj_aktualni_spisek():
     print(dict(bottle.request.forms))
     indeks = bottle.request.forms.getunicode("indeks")
-    spisek = stanje.spiski[int(indeks)]
-    stanje.aktualni_spisek = spisek
-    stanje.shrani_v_datoteko(IME_DATOTEKE)
+    spisek = koledar.datumi[koledar.aktualni_datum].spiski[int(indeks)]
+    koledar.datumi[koledar.aktualni_datum].aktualni_spisek = spisek
+    koledar.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect("/")
 
 #========================================================================================================================

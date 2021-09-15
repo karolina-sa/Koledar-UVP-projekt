@@ -4,32 +4,43 @@
 <br><br>
 <div class="p-3 mb-2 bg-light text-dark">
     <h1 style="text-align: center; font-size: 60px; margin: 0ex; padding: 0ex;">
-        <b>KOLEDAR</b></h1>
-    <p style="text-align: center; margin: 0ex; padding: 0ex; font-size: 35px; font-family:'Monotype Corsiva','Apple Chancery','ITC Zapf Chancery','URW Chancery L',cursive;"
-        >koledar obveznosti & dnevnik</p>
+        <b>KOLEDAR</b>
+    </h1>
+    <p
+        style="text-align: center; margin: 0ex; padding: 0ex; font-size: 35px; font-family:'Monotype Corsiva','Apple Chancery','ITC Zapf Chancery','URW Chancery L',cursive;">
+        koledar obveznosti & dnevnik</p>
 </div><br><br>
 
 <!-- DATEPICKER: -->
 Datum:
-<form action="/izberi-datum/"> 
+<form method="POST" action="/zamenjaj-datum/">
     <table>
         <tr>
             <td>
-                <form>
-                    <input type="date" class="form-control col-xs-4" name="datum" style="width: 30ex;">
-                </form>
+                <input type="date" class="form-control col-xs-4" name="datum" style="width: 30ex;">
             </td>
             <td>
-                <form>
-                    <button class="btn btn-outline-dark">Izberi</button>
-                </form>
+                <button class="btn btn-outline-dark">Izberi</button>
             </td>
         </tr>
     </table>
 </form>
-<br><br>
+<br>
 
-<!-- IZBIRA MED OBVAZNOSTMI IN DNEVNIKOM: -->
+
+<!-- KATERI DAN JE: -->
+% slovar_datumi = {'01': 'januar', '02': 'februar', '03': 'marec', '04': 'april', '05': 'maj', '06': 'junij', '07': 'julij', '08': 'avgust', '09': 'september', '10': 'oktober', '11': 'november', '12': 'december'}
+% seznam = aktualni_datum.split('-')
+% leto = seznam[0]
+% mesec = slovar_datumi[seznam[1]]
+% dan = seznam[2]
+% izpisi_datum = dan + '.' + ' ' + mesec + ' ' + leto
+<p style="font-size: 25px; margin: 0ex; padding: 0ex;">
+    Datum: <b>{{izpisi_datum}}</b>
+<p>
+
+
+<!-- IZBIRA MED OBVEZNOSTMI IN DNEVNIKOM: -->
 <table>
     <tr>
         <td>
@@ -44,6 +55,7 @@ Datum:
         </td>
     </tr>
 </table><br>
+
 
 <!-- VRSTICA S SPISKI: -->
 <nav class="navbar navbar-light bg-light" style="height: 9ex;">
@@ -71,12 +83,15 @@ Datum:
                         <button class="btn btn-outline-dark">Dodaj</button>
                     </td>
                 </form>
-                    <td>
-                        <form method="POST" action="/izbrisi-spisek/">
-                            <button class="btn btn-outline-dark">Izbriši aktualni spisek {{aktualni_spisek.ime}}</button>
-                        </form>
-                    </td>
-            </tr>   
+                <td>
+                    <!-- izbris spiska: -->
+                    % if aktualni_spisek:
+                    <form method="POST" action="/izbrisi-spisek/">
+                        <button class="btn btn-outline-dark">Izbriši aktualni spisek <b>{{aktualni_spisek.ime}}</b></button>
+                    </form>
+                    % end
+                </td>
+            </tr>
         </table>
     </div>
 </nav>
@@ -85,7 +100,8 @@ Datum:
 
 <!-- Modal za opravila: -->
 <div class="container mt-5">
-    <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#myModal">Dodaj dogodek/opravilo/načrt</button>
+    <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#myModal">Dodaj
+        dogodek/opravilo/načrt</button>
     <div class="modal" id="myModal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -97,24 +113,28 @@ Datum:
                     <form method="POST" action="/dodaj-opravilo/">
                         <div>
                             <label class="label">Ime:</label><br>
-                            <input class="form-control" id="exampleFormControlInput1" type="text" name="ime" placeholder="Ime dogodka/opravila/načrta">
+                            <input class="form-control" id="exampleFormControlInput1" type="text" name="ime"
+                                placeholder="Ime dogodka/opravila/načrta">
                             <small id="emailHelp" class="form-text text-muted">Ime je obvezno.</small><br><br>
                         </div>
                         <div>
                             <label class="label">Opis:</label><br>
-                            <textarea type="text" class="form-control" id="exampleFormControlTextarea1" rows="7" name="opis" placeholder="Opis dogodka/opravila/načrta"></textarea>
+                            <textarea type="text" class="form-control" id="exampleFormControlTextarea1" rows="7"
+                                name="opis" placeholder="Opis dogodka/opravila/načrta"></textarea>
                             <small id="emailHelp" class="form-text text-muted">Opis ni obvezen.</small>
                         </div>
                 </div>
                 <div class="modal-footer">
-                        <button class="btn btn-outline-dark">Dodaj</button>
+                    <button class="btn btn-outline-dark">Dodaj</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+    crossorigin="anonymous"></script>
 <br>
 
 % for indeks, opravilo in enumerate(opravila):
@@ -126,17 +146,21 @@ Datum:
                 <td style="width: 50%;">
                     <p class="mb-0" style="font-weight: bold; text-transform: uppercase;">
                         {{ opravilo.ime }}
-                    </p>          
+                    </p>
                 </td>
                 <td style="text-align: right;">
+                    <!-- izbris opravila: -->
                     <form method="POST" action="/izbrisi-opravilo/">
                         <button class="btn" name="indeks" value="{{indeks}}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-trash" viewBox="0 0 16 16">
+                                <path
+                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                <path fill-rule="evenodd"
+                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
                             </svg>
                         </button>
-                    </form>           
+                    </form>
                 </td>
             </tr>
         </table>
@@ -149,9 +173,8 @@ Datum:
 
 % end
 
-
 % else:
-
-<p>Nimate še nobenega spiska. Dodajte ga.</p>
+<br>
+<b><p style="color: red; font-size: 20px; text-align: right;">Nimate še nobenega spiska. Dodajte ga!</p></b>
 
 % end

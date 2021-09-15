@@ -1,6 +1,41 @@
 import json
 
-# MANJKA ZA BELEŽENJE V DATUM
+class Koledar:
+    def __init__(self, datumi=None, aktualni_datum=None):
+        self.datumi = datumi    # datumi je slovar stanj. Ključi so datumi, vrednosti so stanja
+        self.aktualni_datum = aktualni_datum 
+   
+    def dodaj_datum(self, datum):
+        self.datumi[datum] = Stanje()
+
+    def v_slovar(self):
+        return {
+            "datumi": {datum: stanje.v_slovar() for datum, stanje in self.datumi.items()},
+            "aktualni_datum": self.aktualni_datum
+        } 
+    
+    @staticmethod
+    def iz_slovarja(slovar):
+        koledar = Koledar()
+        koledar.datumi = {
+            datum: Stanje.iz_slovarja(stanje) for datum, stanje in slovar["datumi"].items()
+        }
+        if slovar["aktualni_datum"] == "None":
+            koledar.aktualni_datum = None
+        else:
+            koledar.aktualni_datum = slovar["aktualni_datum"]
+        return koledar
+
+    def shrani_v_datoteko(self, ime_datoteke):
+        with open(ime_datoteke, "w") as dat:
+            slovar = self.v_slovar()
+            json.dump(slovar, dat)
+
+    @staticmethod
+    def preberi_iz_datoteke(ime_datoteke):
+        with open(ime_datoteke) as dat:
+            slovar = json.load(dat)
+            return Koledar.iz_slovarja(slovar)
 
 # ========================================================================================================================
 
@@ -43,17 +78,6 @@ class Stanje:
         if slovar["aktualni_spisek"] is not None:
             stanje.aktualni_spisek = stanje.spiski[slovar["aktualni_spisek"]]
         return stanje
-
-    def shrani_v_datoteko(self, ime_datoteke):
-        with open(ime_datoteke, "w") as dat:
-            slovar = self.v_slovar()
-            json.dump(slovar, dat)
-
-    @staticmethod
-    def preberi_iz_datoteke(ime_datoteke):
-        with open(ime_datoteke) as dat:
-            slovar = json.load(dat)
-            return Stanje.iz_slovarja(slovar)
     
 # ========================================================================================================================
 
