@@ -9,16 +9,19 @@ class Koledar:
         self.datumi[datum] = Stanje()
 
     def v_slovar(self):
+        datum_slovar = {}
+        for datum, stanje in self.datumi.items():
+            datum_slovar[datum] = {"obveznosti_dneva" : stanje.v_slovar()}
         return {
-            "datumi": {datum: stanje.v_slovar() for datum, stanje in self.datumi.items()},
-            "aktualni_datum": self.aktualni_datum
+            "datumi": datum_slovar,
+            "aktualni_datum": self.aktualni_datum,
         } 
     
     @staticmethod
     def iz_slovarja(slovar):
         koledar = Koledar()
         koledar.datumi = {
-            datum: Stanje.iz_slovarja(stanje) for datum, stanje in slovar["datumi"].items()
+            datum: Stanje.iz_slovarja(stanje["obveznosti_dneva"]) for datum, stanje in slovar["datumi"].items()
         }
         if slovar["aktualni_datum"] == "None":
             koledar.aktualni_datum = None
@@ -38,6 +41,25 @@ class Koledar:
             return Koledar.iz_slovarja(slovar)
 
 # ========================================================================================================================
+
+class Dnevnik:
+    def __init__(self, dnevniski_zapis):
+        self.dnevniski_zapis = dnevniski_zapis  # niz, nič posebnega, samo besedilo
+
+    def v_slovar(self):
+        return {
+            "dnevnik": self.dnevniski_zapis
+        }
+
+    @staticmethod
+    def iz_slovarja(slovar):
+        return Dnevnik(
+            slovar["dnevnik"],
+        )
+    
+# ========================================================================================================================
+
+# VSE OD TUKAJ DOL SPADA POD "obveznosti_dneva"
 
 class Stanje:
     def __init__(self):

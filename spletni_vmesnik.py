@@ -1,7 +1,6 @@
 import json
-
 import bottle
-from model import Koledar, Opravilo, Spisek, Stanje
+from model import Koledar, Dnevnik, Opravilo, Spisek, Stanje
 
 IME_DATOTEKE = "stanje.json"
 try:
@@ -20,13 +19,17 @@ def osnovna_stran():
         opravila=koledar.datumi[koledar.aktualni_datum].aktualni_spisek.opravila if koledar.datumi[koledar.aktualni_datum].aktualni_spisek else [],
         spiski=koledar.datumi[koledar.aktualni_datum].spiski,  
         aktualni_spisek=koledar.datumi[koledar.aktualni_datum].aktualni_spisek
+        # tukaj pride še za dnevnik
     )
+
+
+# DATUM:
 
 @bottle.post('/zamenjaj-datum/')
 def zamenjaj_datum():
     print(dict(bottle.request.forms))
     datum = bottle.request.forms.getunicode("datum")
-    if "-" in datum:
+    if '-' in datum:
         if datum not in koledar.datumi.keys():
             koledar.dodaj_datum(datum)
         koledar.aktualni_datum = datum
@@ -40,7 +43,7 @@ def dodaj_opravilo():
     ime = bottle.request.forms.getunicode("ime")
     opis = bottle.request.forms.getunicode("opis")
     opravilo = Opravilo(ime, opis)
-    if ime not in 1000000*' ':
+    if ime not in 1000000 * ' ':
         koledar.datumi[koledar.aktualni_datum].dodaj_opravilo(opravilo)
         koledar.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect('/')
@@ -60,18 +63,17 @@ def izbrisi_opravilo():
 def dodaj_spisek():
     ime = bottle.request.forms.getunicode("ime")
     spisek = Spisek(ime)
-    if ime not in 1000000*' ':
+    if ime not in 1000000 * ' ':
         koledar.datumi[koledar.aktualni_datum].dodaj_spisek(spisek)
         koledar.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect('/')
 
-# @bottle.post('/izbrisi-spisek/')        # NE DELA !!!!!!!!!!!!!!!!!!1!!
-# def izbrisi_spisek():
-#     # spisek = stanje.spiski[stanje.aktualni_spisek]
-#     spisek = stanje.aktualni_spisek             # potrebno je najti kateri spisek naj izbriše!
-#     stanje.izbrisi_spisek(spisek)
-#     stanje.shrani_v_datoteko(IME_DATOTEKE)
-#     bottle.redirect('/')
+#@bottle.post('/izbrisi-spisek/')        # NE DELA !!!!!!!!!!!!!!!!!!
+#def izbrisi_spisek():
+#    spisek = koledar.datumi[koledar.aktualni_datum].spiski[koledar.datumi[koledar.aktualni_datum].aktualni_spisek]
+#    koledar.datumi[koledar.aktualni_datum].spiski.izbrisi_spisek(spisek)
+#    koledar.shrani_v_datoteko(IME_DATOTEKE)
+#    bottle.redirect('/')
 
 @bottle.post('/zamenjaj-aktualni-spisek/')
 def zamenjaj_aktualni_spisek():
