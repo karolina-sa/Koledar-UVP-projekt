@@ -1,12 +1,20 @@
 import json
 import bottle
-from model import Koledar, Dnevnik, Opravilo, Spisek, Stanje
+from model import Koledar, Opravilo, Spisek, Stanje
 
 IME_DATOTEKE = "stanje.json"
 try:
     koledar = Koledar.preberi_iz_datoteke(IME_DATOTEKE)
 except FileNotFoundError:
     koledar = Koledar()
+
+@bottle.get('/opis-programa/')
+def opis_programa_get():
+    return bottle.template('opis_programa.html')
+
+@bottle.get('/registracija/')
+def registracija_get():
+    return bottle.template('registracija.html')
 
 #========================================================================================================================
 
@@ -18,8 +26,8 @@ def osnovna_stran():
         aktualni_datum=koledar.aktualni_datum,
         opravila=koledar.datumi[koledar.aktualni_datum].aktualni_spisek.opravila if koledar.datumi[koledar.aktualni_datum].aktualni_spisek else [],
         spiski=koledar.datumi[koledar.aktualni_datum].spiski,  
-        aktualni_spisek=koledar.datumi[koledar.aktualni_datum].aktualni_spisek
-        # tukaj pride še za dnevnik
+        aktualni_spisek=koledar.datumi[koledar.aktualni_datum].aktualni_spisek,
+        dnevnik=koledar.datumi[koledar.aktualni_datum].dnevnik
     )
 
 
@@ -27,13 +35,21 @@ def osnovna_stran():
 
 @bottle.post('/zamenjaj-datum/')
 def zamenjaj_datum():
-    print(dict(bottle.request.forms))
     datum = bottle.request.forms.getunicode("datum")
     if '-' in datum:
         if datum not in koledar.datumi.keys():
             koledar.dodaj_datum(datum)
         koledar.aktualni_datum = datum
         koledar.shrani_v_datoteko(IME_DATOTEKE)
+    bottle.redirect('/')
+
+# DNEVNIK:
+
+@bottle.post('/dodaj-v-dnevnik/')
+def dodaj_v_dnevnik():
+    dnevnik = bottle.request.forms.getunicode("dnevnik")
+    koledar.datumi[koledar.aktualni_datum].dnevnik = dnevnik
+    koledar.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect('/')
 
 # OPRAVILA:
@@ -63,15 +79,21 @@ def izbrisi_opravilo():
 def dodaj_spisek():
     ime = bottle.request.forms.getunicode("ime")
     spisek = Spisek(ime)
-    if ime not in 1000000 * ' ':
+    imena_spiskov = []
+    for s in koledar.datumi[koledar.aktualni_datum].spiski:
+        imena_spiskov.append(s.ime)
+    if ime not in 1000000 * ' ' and ime not in imena_spiskov:   # ne moreš dodat praznega spiska ali spiska, ki že obstaja
         koledar.datumi[koledar.aktualni_datum].dodaj_spisek(spisek)
         koledar.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect('/')
 
 #@bottle.post('/izbrisi-spisek/')        # NE DELA !!!!!!!!!!!!!!!!!!
 #def izbrisi_spisek():
-#    spisek = koledar.datumi[koledar.aktualni_datum].spiski[koledar.datumi[koledar.aktualni_datum].aktualni_spisek]
-#    koledar.datumi[koledar.aktualni_datum].spiski.izbrisi_spisek(spisek)
+#    indeks = int(koledar.datumi[koledar.aktualni_datum].aktualni_spisek)
+#    vsi_spiski = koledar.datumi[koledar.aktualni_datum].spiski # je seznam
+#    spisek = vsi_spiski[indeks]
+#    koledar.datumi[koledar.aktualni_datum].izbrisi_spisek(spisek)
+#    koledar.datumi[koledar.aktualni_datum].aklutalnu_spisek = 0
 #    koledar.shrani_v_datoteko(IME_DATOTEKE)
 #    bottle.redirect('/')
 

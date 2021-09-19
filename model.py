@@ -2,26 +2,23 @@ import json
 
 class Koledar:
     def __init__(self, datumi=None, aktualni_datum=None):
-        self.datumi = datumi    # datumi je slovar stanj. Ključi so datumi, vrednosti so stanja
+        self.datumi = datumi    # datumi je slovar stanj. Ključi so datumi, vrednosti so stanja ("spiski", "aktualni_spisek" in "dnevnik")
         self.aktualni_datum = aktualni_datum 
    
     def dodaj_datum(self, datum):
-        self.datumi[datum] = Stanje()
+        self.datumi[datum] = Stanje(dnevnik="")
 
     def v_slovar(self):
-        datum_slovar = {}
-        for datum, stanje in self.datumi.items():
-            datum_slovar[datum] = {"obveznosti_dneva" : stanje.v_slovar()}
         return {
-            "datumi": datum_slovar,
-            "aktualni_datum": self.aktualni_datum,
+            "datumi": {datum: stanje.v_slovar() for datum, stanje in self.datumi.items()},
+            "aktualni_datum": self.aktualni_datum
         } 
     
     @staticmethod
     def iz_slovarja(slovar):
         koledar = Koledar()
         koledar.datumi = {
-            datum: Stanje.iz_slovarja(stanje["obveznosti_dneva"]) for datum, stanje in slovar["datumi"].items()
+            datum: Stanje.iz_slovarja(stanje) for datum, stanje in slovar["datumi"].items()
         }
         if slovar["aktualni_datum"] == "None":
             koledar.aktualni_datum = None
@@ -39,32 +36,14 @@ class Koledar:
         with open(ime_datoteke) as dat:
             slovar = json.load(dat)
             return Koledar.iz_slovarja(slovar)
-
-# ========================================================================================================================
-
-class Dnevnik:
-    def __init__(self, dnevniski_zapis):
-        self.dnevniski_zapis = dnevniski_zapis  # niz, nič posebnega, samo besedilo
-
-    def v_slovar(self):
-        return {
-            "dnevnik": self.dnevniski_zapis
-        }
-
-    @staticmethod
-    def iz_slovarja(slovar):
-        return Dnevnik(
-            slovar["dnevnik"],
-        )
     
 # ========================================================================================================================
 
-# VSE OD TUKAJ DOL SPADA POD "obveznosti_dneva"
-
 class Stanje:
-    def __init__(self):
+    def __init__(self, dnevnik):
         self.spiski = []
         self.aktualni_spisek = None
+        self.dnevnik = dnevnik
     
     def dodaj_spisek(self, spisek):
         self.spiski.append(spisek)
@@ -74,14 +53,14 @@ class Stanje:
     def izbrisi_spisek(self, spisek):        # VKLJUČI!!!!!!
         self.spiski.remove(spisek)
     
-    def zamenjaj_spisek(self, spisek):
-        self.aktualni_spisek = spisek
-    
     def dodaj_opravilo(self, opravilo):
         self.aktualni_spisek.dodaj_opravilo(opravilo)
     
     def izbrisi_opravilo(self, opravilo):
         self.aktualni_spisek.izbrisi_opravilo(opravilo)
+
+    def dodaj_v_dnevnik(self, nov_dnevnik):     # ZA DNEVNIK
+        self.dnevnik = nov_dnevnik
 
     def v_slovar(self):
         return {
@@ -89,18 +68,19 @@ class Stanje:
             "aktualni_spisek": self.spiski.index(self.aktualni_spisek)
             if self.aktualni_spisek
             else None,
+            "dnevnik": self.dnevnik,
         }
 
     @staticmethod
     def iz_slovarja(slovar):
-        stanje = Stanje()
+        stanje = Stanje(slovar["dnevnik"])
         stanje.spiski = [
             Spisek.iz_slovarja(sl_spiska) for sl_spiska in slovar["spiski"]
         ]
         if slovar["aktualni_spisek"] is not None:
             stanje.aktualni_spisek = stanje.spiski[slovar["aktualni_spisek"]]
         return stanje
-    
+
 # ========================================================================================================================
 
 class Spisek:
