@@ -43,6 +43,7 @@ def zamenjaj_datum():
         koledar.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect('/')
 
+
 # DNEVNIK:
 
 @bottle.post('/dodaj-v-dnevnik/')
@@ -51,6 +52,7 @@ def dodaj_v_dnevnik():
     koledar.datumi[koledar.aktualni_datum].dnevnik = dnevnik
     koledar.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect('/')
+
 
 # OPRAVILA:
 
