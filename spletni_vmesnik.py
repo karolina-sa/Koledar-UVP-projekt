@@ -16,6 +16,10 @@ def opis_programa_get():
 def registracija_get():
     return bottle.template('registracija.html')
 
+@bottle.get('/img/<picture>')
+def serve_pictures(picture):
+    return bottle.static_file(picture, root='img')
+
 #========================================================================================================================
 
 @bottle.get('/')
@@ -89,15 +93,21 @@ def dodaj_spisek():
         koledar.shrani_v_datoteko(IME_DATOTEKE)
     bottle.redirect('/')
 
-#@bottle.post('/izbrisi-spisek/')        # NE DELA !!!!!!!!!!!!!!!!!!
-#def izbrisi_spisek():
-#    indeks = int(koledar.datumi[koledar.aktualni_datum].aktualni_spisek)
-#    vsi_spiski = koledar.datumi[koledar.aktualni_datum].spiski # je seznam
-#    spisek = vsi_spiski[indeks]
-#    koledar.datumi[koledar.aktualni_datum].izbrisi_spisek(spisek)
-#    koledar.datumi[koledar.aktualni_datum].aklutalnu_spisek = 0
-#    koledar.shrani_v_datoteko(IME_DATOTEKE)
-#    bottle.redirect('/')
+@bottle.post('/izbrisi-spisek/')        # NE DELA !!!!!!!!!
+def izbrisi_spisek():
+    spisek = koledar.datumi[koledar.aktualni_datum].aktualni_spisek
+    koledar.datumi[koledar.aktualni_datum].izbrisi_spisek(spisek)
+#    mesto = koledar.datumi[koledar.aktualni_datum].find(spisek)
+#    if mesto == 0:
+#        # mora bit aktualni spisek null
+#    else:
+#        # novo mesto bo mesto - 1
+    if len(koledar.datumi[koledar.aktualni_datum].spiski) == 0:
+        koledar.datumi[koledar.aktualni_datum].aktualni_spisek = None
+    else:
+        koledar.datumi[koledar.aktualni_datum].aktualni_spisek = koledar.datumi[koledar.aktualni_datum].spiski[0]
+    koledar.shrani_v_datoteko(IME_DATOTEKE)
+    bottle.redirect('/')
 
 @bottle.post('/zamenjaj-aktualni-spisek/')
 def zamenjaj_aktualni_spisek():

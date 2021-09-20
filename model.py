@@ -50,7 +50,7 @@ class Stanje:
         if not self.aktualni_spisek:
             self.aktualni_spisek = spisek
     
-    def izbrisi_spisek(self, spisek):        # VKLJUČI!!!!!!
+    def izbrisi_spisek(self, spisek):        # !!!!!!
         self.spiski.remove(spisek)
     
     def dodaj_opravilo(self, opravilo):
@@ -58,9 +58,6 @@ class Stanje:
     
     def izbrisi_opravilo(self, opravilo):
         self.aktualni_spisek.izbrisi_opravilo(opravilo)
-
-    def dodaj_v_dnevnik(self, nov_dnevnik):     # ZA DNEVNIK
-        self.dnevnik = nov_dnevnik
 
     def v_slovar(self):
         return {
