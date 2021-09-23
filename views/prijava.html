@@ -7,6 +7,14 @@
 
 <form method="POST" action="/prijava/">
     <table>
+        % if napaka:
+        <tr>
+            <div class="alert alert-warning" role="alert">
+                {{napaka}}
+            </div>
+        </tr>
+        % end
+        <tr>
         <tr>
             <div class="form-group row" style="margin-left: 1%;">
                 <label class="col-sm-2 col-form-label">Uporabniško ime</label>

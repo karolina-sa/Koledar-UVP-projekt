@@ -24,9 +24,12 @@
                             <img src="/img/logo_brez_ozadja.png" height="50" alt=""> <!-- NE DELA -->
                         </a>
                     </td>
+                    % if defined('uporabnik'):
                     <td>
-                        <a class="nav-link" href="/" style="color: black;">Uporabniško ime: bla bla</a>
+                        <a class="nav-link" href="/" style="color: black;">Uporabniško ime: <b style="font-size: x-large;">{{uporabnik.uporabnisko_ime}}</b></a>
                     </td>
+                    % else: pass
+                    % end
                 </tr>
             </table>
         </div>
@@ -36,15 +39,20 @@
                     <td>
                         <a class="nav-link" href="/opis-programa/" style="color: black;">Opis programa</a>
                     </td>
+                    % if not defined('uporabnik'):
                     <td>
                         <a class="nav-link" href="/registracija/" style="color: black;">Registracija</a>
                     </td>
+                    <td>
+                        <a class="nav-link" href="/prijava/" style="color: black;">Prijava</a>
+                    </td>
+                    % else:
                     <td>
                         <form method="POST" action="/odjava/">
                             <button>Odjava</button>
                         </form>
                     </td>
-
+                    % end
                 </tr>
             </table>
 

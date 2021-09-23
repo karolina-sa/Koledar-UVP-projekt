@@ -1,45 +1,41 @@
 % rebase('base.html')
 
 <!-- Zapis datuma: -->
-% slovar_datumi = {'01': 'januar', '02': 'februar', '03': 'marec', '04': 'april', '05': 'maj', '06': 'junij', '07': 'julij', '08': 'avgust', '09': 'september', '10': 'oktober', '11': 'november', '12': 'december'}
+% slovar_datumi = {'01': 'januar', '02': 'februar', '03': 'marec', '04': 'april', '05': 'maj', '06': 'junij', '07':'julij', '08': 'avgust', '09': 'september', '10': 'oktober', '11': 'november', '12': 'december'}
 % seznam = aktualni_datum.split('-')
 % leto = seznam[0]
 % mesec = slovar_datumi[seznam[1]]
 % dan = seznam[2]
 % izpisi_datum = dan + '.' + ' ' + mesec + ' ' + leto
 
-<p>
-    Uporabnik: {{uporabnik.uporabnisko_ime}}
-</p>
-
 <div class="p-3 mb-2 bg-light text-dark rounded" style="height: 10ex;">
-<table style="width: 100%;">
-    <tr>
-        <td style="width: 50%;"> 
-            <!-- KATERI DAN JE: -->
-            <p style="font-size: 25px;">
-                Datum: <b>{{izpisi_datum}}</b>
-            <p>
-        </td>
-        <td style="float: right;">
-            <!-- DATEPICKER: -->
-            <form method="POST" action="/zamenjaj-datum/">
-                <table>
-                    <tr>
-                        <td>
-                            <input type="date" class="form-control col-xs-4"
-                                style="box-shadow: none; outline: none; border: 1px solid #ccc"
-                                name="datum" style="width: 30ex;">
-                        </td>
-                        <td>
-                            <button class="btn btn-outline-dark">Izberi</button>
-                        </td>
-                    </tr>
-                </table>
-            </form>
-        </td>
-    </tr>
-</table>
+    <table style="width: 100%;">
+        <tr>
+            <td style="width: 50%;">
+                <!-- KATERI DAN JE: -->
+                <p style="font-size: 25px;">
+                    Datum: <b>{{izpisi_datum}}</b>
+                <p>
+            </td>
+            <td style="float: right;">
+                <!-- DATEPICKER: -->
+                <form method="POST" action="/zamenjaj-datum/">
+                    <table>
+                        <tr>
+                            <td>
+                                <input type="date" class="form-control col-xs-4"
+                                    style="box-shadow: none; outline: none; border: 1px solid #ccc" name="datum"
+                                    style="width: 30ex;">
+                            </td>
+                            <td>
+                                <button class="btn btn-outline-dark">Izberi</button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </td>
+        </tr>
+    </table>
 </div><br>
 
 
@@ -48,19 +44,22 @@
     <table style="width: 98%; margin-left: 1%; margin-right: 1%;">
         <tr>
             <td style="width: 49.7%; ">
-                <button class="btn btn-outline-dark" data-toggle="collapse" data-target="#obveznosti-dneva" style="width: 100%;">Obveznosti
+                <button class="btn btn-outline-dark" data-toggle="collapse" data-target="#obveznosti-dneva"
+                    style="width: 100%;">Obveznosti
                     dneva</button>
             </td>
             <td style="width: 0.6%;"></td>
             <td>
-                <button class="btn btn-outline-dark" data-toggle="collapse" data-target="#dnevnik" style="width: 100%;">Dnevnik</button>
+                <button class="btn btn-outline-dark" data-toggle="collapse" data-target="#dnevnik"
+                    style="width: 100%;">Dnevnik</button>
             </td>
         </tr>
     </table><br>
-    
+
     <div class="accordion-group">
         <div class="collapse show" id="obveznosti-dneva" data-parent="#myGroup">
-            <br><p style="font-size: 20px; margin-left: 1%;"><b>OBVEZNOSTI DNEVA:</b></p>
+            <br>
+            <p style="font-size: 20px; margin-left: 1%;"><b>OBVEZNOSTI DNEVA:</b></p>
             <!-- VRSTICA S SPISKI: -->
             <nav class="navbar navbar-light bg-light rounded">
                 <div style="margin-left: 1%;">
@@ -84,8 +83,7 @@
                             <form method="POST" action="/dodaj-spisek/" class="d-flex">
                                 <td>
                                     <input type="text" class="form-control" name="ime"
-                                        style="box-shadow: none; outline: none; border: 1px solid #ccc"
-                                        placeholder="Ime novega spiska">
+                                        style="box-shadow: none; outline: none; border: 1px solid #ccc" placeholder="Ime novega spiska">
                                 </td>
                                 <td>
                                     <button class="btn btn-outline-dark">Dodaj</button>
@@ -94,26 +92,45 @@
                             <td>
                                 <!-- izbris spiska: -->
                                 % if aktualni_spisek:
-                                <form method="POST" action="/izbrisi-spisek/">
-                                    <button class="btn btn-outline-dark">Izbriši aktualni spisek
-                                        <b>{{aktualni_spisek.ime}}</b></button>
-                                </form>
+                                <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#izbris">Izbriši aktualni
+                                    spisek
+                                    <b>{{aktualni_spisek.ime}}</b></button>
+                                <!-- Modal za izbris -->
+                                <div class="modal fade" id="izbris" tabindex="-1" role="dialog">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h3 class="modal-title">Izbris spiska <b>{{aktualni_spisek.ime}}</b></h3>
+                                                <button type="button" class="btn-close" data-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Ste prepričani, da želite izbrisati spisek <b>{{aktualni_spisek.ime}}</b>
+                                                ter pripadajoče dogodke/opravila/načrte?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <form method="POST" action="/izbrisi-spisek/">
+                                                    <button class="btn btn-outline-dark">Da, izbriši aktualni spisek
+                                                        <b>{{aktualni_spisek.ime}}</b></button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 % end
                             </td>
                         </tr>
-                    </table>
-                </div>
-            </nav>
-
-            % if aktualni_spisek:
-
-            <!-- Modal za opravila: -->
-            <div class="container mt-5">
-                <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal"
-                    data-bs-target="#myModal">Dodaj nov
-                    dogodek/opravilo/načrt</button>
-                <div class="modal" id="myModal">
-                    <div class="modal-dialog">
+                        </table>
+                        </div>
+                        </nav>
+                        
+                        % if aktualni_spisek:
+                        
+                        <!-- Modal za opravila: -->
+                        <div class="container mt-5">
+                            <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#opravila">Dodaj nov
+                                dogodek/opravilo/načrt</button>
+                            <div class="modal" id="opravila">
+                                <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h3 class="modal-title">Nov dogodek/opravilo/načrt</h3>
@@ -124,9 +141,8 @@
                                     <div>
                                         <label class="label">Ime:</label><br>
                                         <input class="form-control"
-                                            style="box-shadow: none; outline: none; border: 1px solid #ccc"
-                                            type="text" name="ime"
-                                            placeholder="Ime dogodka/opravila/načrta">
+                                            style="box-shadow: none; outline: none; border: 1px solid #ccc" type="text"
+                                            name="ime" placeholder="Ime dogodka/opravila/načrta">
                                         <small id="emailHelp" class="form-text text-muted">Ime je
                                             obvezno.</small><br><br>
                                     </div>
@@ -191,19 +207,24 @@
             % else:
             <br>
             <b>
-                <p style="font-size: 20px; text-align: right; text-decoration: underline; margin-right: 1%;">Nimate še nobenega spiska. Dodajte ga!</p>
+                <p style="font-size: 20px; text-align: right; text-decoration: underline; margin-right: 1%;">Nimate še
+                    nobenega spiska. Dodajte ga!</p>
             </b>
 
             % end
         </div>
 
         <div class="collapse" id="dnevnik" data-parent="#myGroup">
-            <br><p style="font-size: 20px; margin-left: 1%;"><b>DNEVNIK:</b></p>
+            <br>
+            <p style="font-size: 20px; margin-left: 1%;"><b>DNEVNIK:</b></p>
             <form method="POST" action="/dodaj-v-dnevnik/">
-                <textarea class="form-control" style="box-shadow: none; outline: none; border: 1px solid #ccc; margin-left: 1%; margin-right: 1%; width: 98%;"
-                    rows="10" placeholder="Dnevniškega zapisa dne {{izpisi_datum}} še ni." name="dnevnik">{{dnevnik}}</textarea>
-                    <button class="btn btn-outline-dark float-right" type="submit" style="float: right; margin-right: 1%; margin-top: 0.5%;">Shrani dnevniški zapis</button>
+                <textarea class="form-control"
+                    style="box-shadow: none; outline: none; border: 1px solid #ccc; margin-left: 1%; margin-right: 1%; width: 98%;"
+                    rows="10" placeholder="Dnevniškega zapisa dne {{izpisi_datum}} še ni."
+                    name="dnevnik">{{dnevnik}}</textarea>
+                <button class="btn btn-outline-dark float-right" type="submit"
+                    style="float: right; margin-right: 1%; margin-top: 0.5%;">Shrani dnevniški zapis</button>
             </form>
         </div><br><br>
-        </div>
-        </div>
+    </div>
+</div>

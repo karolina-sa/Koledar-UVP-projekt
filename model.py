@@ -1,12 +1,14 @@
 import json
+import hashlib
 
 from datetime import date
 danes = date.today()
 danasnji_datum = danes.strftime("%Y-%m-%d")
 
 def zasifriraj_geslo(geslo_v_cistopisu):
-    zasifrirano_geslo = "abc" + geslo_v_cistopisu[::-1] + "xyz"
-    return zasifrirano_geslo
+    h = hashlib.blake2b()
+    h.update(geslo_v_cistopisu.encode(encoding="utf-8"))
+    return h.hexdigest()
 
 # ========================================================================================================================
 
@@ -15,6 +17,26 @@ class Uporabnik:
         self.uporabnisko_ime = uporabnisko_ime
         self.zasifrirano_geslo = zasifrirano_geslo
         self.koledar = koledar
+
+    @staticmethod
+    def prijava(uporabnisko_ime, geslo_v_cistopisu):
+        uporabnik = Uporabnik.preberi_iz_datoteke(uporabnisko_ime)
+        if uporabnik is None:
+            raise ValueError("Uporabniško ime ne obstaja")
+        elif uporabnik.preveri_geslo(geslo_v_cistopisu):
+            return uporabnik        
+        else:
+            raise ValueError("Geslo je napačno")
+
+    @staticmethod
+    def registracija(uporabnisko_ime, geslo_v_cistopisu):
+        if Uporabnik.preberi_iz_datoteke(uporabnisko_ime) is not None:
+            raise ValueError("Uporabniško ime že obstaja")
+        else:
+            zasifrirano_geslo = zasifriraj_geslo(geslo_v_cistopisu)
+            uporabnik = Uporabnik(uporabnisko_ime, zasifrirano_geslo, Koledar())
+            uporabnik.shrani_v_datoteko()
+            return uporabnik
 
     def preveri_geslo(self, geslo_v_cistopisu):
         return self.zasifrirano_geslo == zasifriraj_geslo(geslo_v_cistopisu)
@@ -32,8 +54,8 @@ class Uporabnik:
     @staticmethod
     def iz_slovarja(slovar):
         uporabnisko_ime = slovar["uporabnisko_ime"]
-        koledar = Koledar.iz_slovarja(slovar["koledar"])
         zasifrirano_geslo = slovar["zasifrirano_geslo"]
+        koledar = Koledar.iz_slovarja(slovar["koledar"])
         return Uporabnik(uporabnisko_ime, zasifrirano_geslo, koledar)
 
     def shrani_v_datoteko(self):
@@ -47,9 +69,12 @@ class Uporabnik:
 
     @staticmethod
     def preberi_iz_datoteke(uporabnisko_ime):
-        with open(Uporabnik.ime_uporabnikove_datoteke(uporabnisko_ime)) as dat:
-            slovar = json.load(dat)
-            return Uporabnik.iz_slovarja(slovar)
+        try:
+            with open(Uporabnik.ime_uporabnikove_datoteke(uporabnisko_ime)) as dat:
+                slovar = json.load(dat)
+                return Uporabnik.iz_slovarja(slovar)
+        except FileNotFoundError:
+            return None
 
 # ========================================================================================================================
 

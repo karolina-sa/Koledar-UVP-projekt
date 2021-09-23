@@ -21,33 +21,51 @@ def podatki_uporabnika(uporabnisko_ime):
     except FileNotFoundError:
         bottle.redirect("/prijava/")
 
+
+@bottle.get('/registracija/')
+def registracija_get():
+    return bottle.template('registracija.html', napaka=None)
+
+@bottle.post("/registracija/")
+def registracija_post():
+    uporabnisko_ime = bottle.request.forms.getunicode("uporabnisko_ime")
+    geslo_v_cistopisu = bottle.request.forms.getunicode("geslo")
+    if geslo_v_cistopisu in 1000000 * ' ' or uporabnisko_ime in 1000000 * ' ':
+        return bottle.template("registracija.html", napaka="Uporabniško ime in geslo ne smeta biti prazna niza.")
+    else:
+        if not uporabnisko_ime:
+            return bottle.template("registracija.html", napaka="Vnesite uporabniško ime.")
+        try:
+            Uporabnik.registracija(uporabnisko_ime, geslo_v_cistopisu)
+            bottle.response.set_cookie(
+                PISKOTEK_UPORABNISKO_IME, uporabnisko_ime, path="/", secret=SKRIVNOST
+            )
+            bottle.redirect("/")
+        except ValueError:
+            return bottle.template("registracija.html", napaka="Uporabniško ime je že zasedeno.")
+
+
 @bottle.get('/prijava/')
 def prijava_get():
-    return bottle.template("prijava.html")
+    return bottle.template("prijava.html", napaka=None)
 
 @bottle.post('/prijava/')
 def prijava_post():
     uporabnisko_ime = bottle.request.forms.getunicode("uporabnisko_ime")
     geslo_v_cistopisu = bottle.request.forms.getunicode("geslo")
-    if uporabnisko_ime:
-        uporabnik = podatki_uporabnika(uporabnisko_ime)
-        if uporabnik.preveri_geslo(geslo_v_cistopisu):
-            bottle.response.set_cookie(PISKOTEK_UPORABNISKO_IME, uporabnisko_ime, path="/", secret=SKRIVNOST)
-            bottle.redirect("/")
-        else:
-            return bottle.template("prijava.html")  # Geslo je napačno
-    else:
-        return bottle.template("prijava.html")  # Ni vnesel imena
+    if not uporabnisko_ime:
+        return bottle.template("prijava.html", napaka="Vnesi uporabniško ime.")
+    try:
+        Uporabnik.prijava(uporabnisko_ime, geslo_v_cistopisu)
+        bottle.response.set_cookie(PISKOTEK_UPORABNISKO_IME, uporabnisko_ime, path="/", secret=SKRIVNOST)
+        bottle.redirect("/")
+    except ValueError:
+        return bottle.template("prijava.html", napaka="Napačno uporabniško ime ali geslo. Za uporabo programa morate biti registrirani.")
 
 @bottle.post("/odjava/")
 def odjava():
     bottle.response.delete_cookie(PISKOTEK_UPORABNISKO_IME, path="/")
     bottle.redirect("/")
-
-@bottle.get('/registracija/')
-def registracija_get():
-    return bottle.template('registracija.html')
-
 
 #========================================================================================================================
 

@@ -1,6 +1,6 @@
 {
     "uporabnisko_ime": "Karolina",
-    "zasifrirano_geslo": "abcolsegkxyz",
+    "zasifrirano_geslo": "b9f974680f8c69abcf2967b63826b6fd2e3620d82437800ef409af1778f56b49386f08447400a26ba7d91ce83de1ea1a8913c079c9800c5aaaa471e2d1daf2e4",
     "koledar": {
         "datumi": {
             "2021-09-23": {
@@ -8,10 +8,23 @@
                     {
                         "ime": "KAROLINA",
                         "opravila": []
+                    },
+                    {
+                        "ime": "\u0160port",
+                        "opravila": []
+                    },
+                    {
+                        "ime": "Filip",
+                        "opravila": [
+                            {
+                                "ime": "Filip je \u0161el spat",
+                                "opis": ""
+                            }
+                        ]
                     }
                 ],
-                "aktualni_spisek": 0,
-                "dnevnik": ""
+                "aktualni_spisek": 2,
+                "dnevnik": "Danes je bil lep dan ..."
             },
             "2021-09-15": {
                 "spiski": [],
