@@ -1,9 +1,67 @@
 import json
 
+from datetime import date
+danes = date.today()
+danasnji_datum = danes.strftime("%Y-%m-%d")
+
+def zasifriraj_geslo(geslo_v_cistopisu):
+    zasifrirano_geslo = "abc" + geslo_v_cistopisu[::-1] + "xyz"
+    return zasifrirano_geslo
+
+# ========================================================================================================================
+
+class Uporabnik:
+    def __init__(self, uporabnisko_ime, zasifrirano_geslo, koledar):
+        self.uporabnisko_ime = uporabnisko_ime
+        self.zasifrirano_geslo = zasifrirano_geslo
+        self.koledar = koledar
+
+    def preveri_geslo(self, geslo_v_cistopisu):
+        return self.zasifrirano_geslo == zasifriraj_geslo(geslo_v_cistopisu)
+
+    def nastavi_geslo(self, geslo_v_cistopisu):
+        self.zasifrirano_geslo = zasifriraj_geslo(geslo_v_cistopisu)
+
+    def v_slovar(self):
+        return {
+            "uporabnisko_ime": self.uporabnisko_ime,
+            "zasifrirano_geslo": self.zasifrirano_geslo,
+            "koledar": self.koledar.v_slovar()
+        }
+
+    @staticmethod
+    def iz_slovarja(slovar):
+        uporabnisko_ime = slovar["uporabnisko_ime"]
+        koledar = Koledar.iz_slovarja(slovar["koledar"])
+        zasifrirano_geslo = slovar["zasifrirano_geslo"]
+        return Uporabnik(uporabnisko_ime, zasifrirano_geslo, koledar)
+
+    def shrani_v_datoteko(self):
+        with open(Uporabnik.ime_uporabnikove_datoteke(self.uporabnisko_ime), "w") as dat:
+            slovar = self.v_slovar()
+            json.dump(slovar, dat)
+
+    @staticmethod
+    def ime_uporabnikove_datoteke(uporabnisko_ime):
+        return f"{uporabnisko_ime}.json"
+
+    @staticmethod
+    def preberi_iz_datoteke(uporabnisko_ime):
+        with open(Uporabnik.ime_uporabnikove_datoteke(uporabnisko_ime)) as dat:
+            slovar = json.load(dat)
+            return Uporabnik.iz_slovarja(slovar)
+
+# ========================================================================================================================
+
 class Koledar:
     def __init__(self, datumi=None, aktualni_datum=None):
+        if aktualni_datum == None:
+            datumi = {danasnji_datum: Stanje(dnevnik="")}
+            aktualni_datum = danasnji_datum
+            self.datumi = datumi
+            self.aktualni_datum = aktualni_datum
         self.datumi = datumi    # datumi je slovar stanj. Ključi so datumi, vrednosti so stanja ("spiski", "aktualni_spisek" in "dnevnik")
-        self.aktualni_datum = aktualni_datum 
+        self.aktualni_datum = aktualni_datum
    
     def dodaj_datum(self, datum):
         self.datumi[datum] = Stanje(dnevnik="")
@@ -25,17 +83,6 @@ class Koledar:
         else:
             koledar.aktualni_datum = slovar["aktualni_datum"]
         return koledar
-
-    def shrani_v_datoteko(self, ime_datoteke):
-        with open(ime_datoteke, "w") as dat:
-            slovar = self.v_slovar()
-            json.dump(slovar, dat)
-
-    @staticmethod
-    def preberi_iz_datoteke(ime_datoteke):
-        with open(ime_datoteke) as dat:
-            slovar = json.load(dat)
-            return Koledar.iz_slovarja(slovar)
     
 # ========================================================================================================================
 

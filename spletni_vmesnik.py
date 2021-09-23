@@ -1,37 +1,69 @@
-import json
 import bottle
-from model import Koledar, Opravilo, Spisek, Stanje
+from model import Uporabnik, Koledar, Stanje, Spisek, Opravilo
 
-IME_DATOTEKE = "stanje.json"
-try:
-    koledar = Koledar.preberi_iz_datoteke(IME_DATOTEKE)
-except FileNotFoundError:
-    koledar = Koledar()
+PISKOTEK_UPORABNISKO_IME = "uporabnisko_ime"
+SKRIVNOST = "to je ena skrivnost"
 
-@bottle.get('/opis-programa/')
-def opis_programa_get():
-    return bottle.template('opis_programa.html')
+
+def shrani_stanje(uporabnik):
+    uporabnik.shrani_v_datoteko()
+
+def trenutni_uporabnik():
+    uporabnisko_ime = bottle.request.get_cookie(PISKOTEK_UPORABNISKO_IME, secret=SKRIVNOST)
+    if uporabnisko_ime:
+        return podatki_uporabnika(uporabnisko_ime)
+    else:
+        bottle.redirect("/prijava/")
+
+def podatki_uporabnika(uporabnisko_ime):
+    try:
+        return Uporabnik.preberi_iz_datoteke(uporabnisko_ime)
+    except FileNotFoundError:
+        bottle.redirect("/prijava/")
+
+@bottle.get('/prijava/')
+def prijava_get():
+    return bottle.template("prijava.html")
+
+@bottle.post('/prijava/')
+def prijava_post():
+    uporabnisko_ime = bottle.request.forms.getunicode("uporabnisko_ime")
+    geslo_v_cistopisu = bottle.request.forms.getunicode("geslo")
+    if uporabnisko_ime:
+        uporabnik = podatki_uporabnika(uporabnisko_ime)
+        if uporabnik.preveri_geslo(geslo_v_cistopisu):
+            bottle.response.set_cookie(PISKOTEK_UPORABNISKO_IME, uporabnisko_ime, path="/", secret=SKRIVNOST)
+            bottle.redirect("/")
+        else:
+            return bottle.template("prijava.html")  # Geslo je napačno
+    else:
+        return bottle.template("prijava.html")  # Ni vnesel imena
+
+@bottle.post("/odjava/")
+def odjava():
+    bottle.response.delete_cookie(PISKOTEK_UPORABNISKO_IME, path="/")
+    bottle.redirect("/")
 
 @bottle.get('/registracija/')
 def registracija_get():
     return bottle.template('registracija.html')
 
-@bottle.get('/img/<picture>')
-def serve_pictures(picture):
-    return bottle.static_file(picture, root='img')
 
 #========================================================================================================================
 
 @bottle.get('/')
 def osnovna_stran():
+    uporabnik = trenutni_uporabnik()
     return bottle.template(
         "osnovna_stran.html",
-        datumi=koledar.datumi,
-        aktualni_datum=koledar.aktualni_datum,
-        opravila=koledar.datumi[koledar.aktualni_datum].aktualni_spisek.opravila if koledar.datumi[koledar.aktualni_datum].aktualni_spisek else [],
-        spiski=koledar.datumi[koledar.aktualni_datum].spiski,  
-        aktualni_spisek=koledar.datumi[koledar.aktualni_datum].aktualni_spisek,
-        dnevnik=koledar.datumi[koledar.aktualni_datum].dnevnik
+        koledar=uporabnik.koledar,
+        datumi=uporabnik.koledar.datumi,
+        aktualni_datum=uporabnik.koledar.aktualni_datum,
+        opravila=uporabnik.koledar.datumi[uporabnik.koledar.aktualni_datum].aktualni_spisek.opravila if uporabnik.koledar.datumi[uporabnik.koledar.aktualni_datum].aktualni_spisek else [],
+        spiski=uporabnik.koledar.datumi[uporabnik.koledar.aktualni_datum].spiski,  
+        aktualni_spisek=uporabnik.koledar.datumi[uporabnik.koledar.aktualni_datum].aktualni_spisek,
+        dnevnik=uporabnik.koledar.datumi[uporabnik.koledar.aktualni_datum].dnevnik,
+        uporabnik=uporabnik,
     )
 
 
@@ -39,12 +71,13 @@ def osnovna_stran():
 
 @bottle.post('/zamenjaj-datum/')
 def zamenjaj_datum():
+    uporabnik = trenutni_uporabnik()
     datum = bottle.request.forms.getunicode("datum")
     if '-' in datum:
-        if datum not in koledar.datumi.keys():
-            koledar.dodaj_datum(datum)
-        koledar.aktualni_datum = datum
-        koledar.shrani_v_datoteko(IME_DATOTEKE)
+        if datum not in uporabnik.koledar.datumi.keys():
+            uporabnik.koledar.dodaj_datum(datum)
+        uporabnik.koledar.aktualni_datum = datum
+    shrani_stanje(uporabnik)
     bottle.redirect('/')
 
 
@@ -52,9 +85,10 @@ def zamenjaj_datum():
 
 @bottle.post('/dodaj-v-dnevnik/')
 def dodaj_v_dnevnik():
+    uporabnik = trenutni_uporabnik()
     dnevnik = bottle.request.forms.getunicode("dnevnik")
-    koledar.datumi[koledar.aktualni_datum].dnevnik = dnevnik
-    koledar.shrani_v_datoteko(IME_DATOTEKE)
+    uporabnik.koledar.datumi[uporabnik.koledar.aktualni_datum].dnevnik = dnevnik
+    shrani_stanje(uporabnik)
     bottle.redirect('/')
 
 
@@ -62,20 +96,22 @@ def dodaj_v_dnevnik():
 
 @bottle.post('/dodaj-opravilo/')
 def dodaj_opravilo():
+    uporabnik = trenutni_uporabnik()
     ime = bottle.request.forms.getunicode("ime")
     opis = bottle.request.forms.getunicode("opis")
     opravilo = Opravilo(ime, opis)
     if ime not in 1000000 * ' ':
-        koledar.datumi[koledar.aktualni_datum].dodaj_opravilo(opravilo)
-        koledar.shrani_v_datoteko(IME_DATOTEKE)
+        uporabnik.koledar.datumi[uporabnik.koledar.aktualni_datum].dodaj_opravilo(opravilo)
+    shrani_stanje(uporabnik)
     bottle.redirect('/')
 
 @bottle.post('/izbrisi-opravilo/')
 def izbrisi_opravilo():
+    uporabnik = trenutni_uporabnik()
     indeks = bottle.request.forms.getunicode("indeks")
-    opravilo = koledar.datumi[koledar.aktualni_datum].aktualni_spisek.opravila[int(indeks)]
-    koledar.datumi[koledar.aktualni_datum].izbrisi_opravilo(opravilo)
-    koledar.shrani_v_datoteko(IME_DATOTEKE)
+    opravilo = uporabnik.koledar.datumi[uporabnik.koledar.aktualni_datum].aktualni_spisek.opravila[int(indeks)]
+    uporabnik.koledar.datumi[uporabnik.koledar.aktualni_datum].izbrisi_opravilo(opravilo)
+    shrani_stanje(uporabnik)
     bottle.redirect('/')
 
 
@@ -83,40 +119,50 @@ def izbrisi_opravilo():
 
 @bottle.post('/dodaj-spisek/')
 def dodaj_spisek():
+    uporabnik = trenutni_uporabnik()
     ime = bottle.request.forms.getunicode("ime")
     spisek = Spisek(ime)
     imena_spiskov = []
-    for s in koledar.datumi[koledar.aktualni_datum].spiski:
+    for s in uporabnik.koledar.datumi[uporabnik.koledar.aktualni_datum].spiski:
         imena_spiskov.append(s.ime)
     if ime not in 1000000 * ' ' and ime not in imena_spiskov:   # ne moreš dodat praznega spiska ali spiska, ki že obstaja
-        koledar.datumi[koledar.aktualni_datum].dodaj_spisek(spisek)
-        koledar.shrani_v_datoteko(IME_DATOTEKE)
+        uporabnik.koledar.datumi[uporabnik.koledar.aktualni_datum].dodaj_spisek(spisek)
+    shrani_stanje(uporabnik)
     bottle.redirect('/')
 
-@bottle.post('/izbrisi-spisek/')        # NE DELA !!!!!!!!!
+@bottle.post('/izbrisi-spisek/')       
 def izbrisi_spisek():
-    spisek = koledar.datumi[koledar.aktualni_datum].aktualni_spisek
-    koledar.datumi[koledar.aktualni_datum].izbrisi_spisek(spisek)
-#    mesto = koledar.datumi[koledar.aktualni_datum].find(spisek)
-#    if mesto == 0:
-#        # mora bit aktualni spisek null
-#    else:
-#        # novo mesto bo mesto - 1
-    if len(koledar.datumi[koledar.aktualni_datum].spiski) == 0:
-        koledar.datumi[koledar.aktualni_datum].aktualni_spisek = None
+    uporabnik = trenutni_uporabnik()
+    spisek = uporabnik.koledar.datumi[uporabnik.koledar.aktualni_datum].aktualni_spisek
+    uporabnik.koledar.datumi[uporabnik.koledar.aktualni_datum].izbrisi_spisek(spisek)
+    if len(uporabnik.koledar.datumi[uporabnik.koledar.aktualni_datum].spiski) == 0:
+        uporabnik.koledar.datumi[uporabnik.koledar.aktualni_datum].aktualni_spisek = None
     else:
-        koledar.datumi[koledar.aktualni_datum].aktualni_spisek = koledar.datumi[koledar.aktualni_datum].spiski[0]
-    koledar.shrani_v_datoteko(IME_DATOTEKE)
+        uporabnik.koledar.datumi[uporabnik.koledar.aktualni_datum].aktualni_spisek = uporabnik.koledar.datumi[uporabnik.koledar.aktualni_datum].spiski[0]
+    shrani_stanje(uporabnik)
     bottle.redirect('/')
 
 @bottle.post('/zamenjaj-aktualni-spisek/')
 def zamenjaj_aktualni_spisek():
+    uporabnik = trenutni_uporabnik()
     print(dict(bottle.request.forms))
     indeks = bottle.request.forms.getunicode("indeks")
-    spisek = koledar.datumi[koledar.aktualni_datum].spiski[int(indeks)]
-    koledar.datumi[koledar.aktualni_datum].aktualni_spisek = spisek
-    koledar.shrani_v_datoteko(IME_DATOTEKE)
+    spisek = uporabnik.koledar.datumi[uporabnik.koledar.aktualni_datum].spiski[int(indeks)]
+    uporabnik.koledar.datumi[uporabnik.koledar.aktualni_datum].aktualni_spisek = spisek
+    shrani_stanje(uporabnik)
     bottle.redirect("/")
+
+#========================================================================================================================
+
+# DRUGO:
+
+@bottle.get('/opis-programa/')
+def opis_programa_get():
+    return bottle.template('opis_programa.html')
+
+@bottle.get('/img/<picture>')
+def serve_pictures(picture):    # ker bottle nima za slike
+    return bottle.static_file(picture, root='img')
 
 #========================================================================================================================
 

@@ -1,21 +1,30 @@
 % rebase('base.html')
-<p>
-    Za uporabo programa se je potrebno registrati.
-</p>
-<p style="font-size: 25px; margin: 0ex; padding: 0ex;">Registracija:</p>
+
+<div class="p-3 mb-2 bg-light text-dark rounded" style="height: 9ex;">
+    <p style="font-size: 25px; margin: 0ex; padding: 0ex;">Registracija:</p><br>
+</div>
+<br>
 
 <form method="POST">
-    <div class="col-md-4 mb-3">
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroupPrepend2">@</span>
-            </div>
-            <input name="uporabnisko_ime" class="form-control"
-            style="box-shadow: none; outline: none; border: 1px solid #ccc"
-            type="text" 
-                placeholder="Uporabniško ime" aria-describedby="inputGroupPrepend2" required>
-            <button class="btn btn-outline-dark active">Registriraj se</button>
-        </div>
-    </div>
-    </div>
+    <table>
+        <tr>
+            <div class="form-group row" style="margin-left: 1%;">
+                <label class="col-sm-2 col-form-label">Uporabniško ime</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="Uporabniško ime" name="uporabnisko_ime">
+                </div>
+            </div><br>
+        </tr>
+        <tr>
+            <div class="form-group row" style="margin-left: 1%;">
+                <label class="col-sm-2 col-form-label">Geslo</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" placeholder="Geslo" name="geslo">
+                </div>
+            </div><br>
+        </tr>
+        <tr>
+            <button class="btn btn-outline-dark active" style="width: 10%; float: right;">Registriraj se</button>
+        </tr>
+    </table>
 </form>
