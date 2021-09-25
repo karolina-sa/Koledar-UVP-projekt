@@ -1,17 +1,77 @@
 % rebase('base.html')
-
 <p>
-    Koledar je program, ki omogoča beleženje obveznosti ter dnevnika po posameznih dnevnih. 
+    Avtor: Karolina Šavli
+    <br><br>
+    Koledar je program, ki omogoča beleženje opravil ter dnevnika po dnevih.
+    Ideja izvira iz dveh vsakodnevnih rutin, jutranjega pisanja seznama obveznosti ter večernega beleženja dnevnika.
+    V programu sem se odločila združiti obe, saj je kdaj bolj priročno in hitreje pisati na računalnik, kot pa na papir.
+    Do svojih, shranjenih podatkov lahko dostopamo kjerkoli preko svojega uporabniškega imena in gesla, kar omogoča
+    varno
+    uporabo programa večjenu številu ljudi in ne zgolj enemu posameznuku.
 </p>
+<br>
+<h4>
+    <b>UPORABA</b>
+</h4>
+<p>Za uporabo programa se je nujno potrebno registrirati. Uporabniškega imena ter gesla se po
+    registraciji ne more spremeniti. Ko ste enkrat registriran uporabnik, se je ob odprtju potrebno zgolj prijaviti.<br>
+    Ob prvi prijavi se vam bo prikazala začetna stran, podobna sledeči:
+</p>
+<img src="/img/osnovna_stran.jpg" width="80%" style="display: block ;margin-left: auto; margin-right: auto;">
 
-<h5>
-    UPORABA
-</h5>
+<h5><b>Navigacijska vrstica</b></h5>
 <p>
-    vključi:
-    - kako se gre domo (klik na naslov, uporabnika)
-    - izbira datuma
-    - izbira med obveznosti_dneva in dnevnikom
-    - dodajanje opravila
-    to je rečmo da vse
+    V navigacijski vrstici, na vrhu strani, najdete na levi logo programa in vaše uporabniško ime, na desni pa povezavo
+    do opisa programa in gumb <i>Odjava</i>, ki služi istoimenski funkciji, odjavi.
+    Ob kliku na logo in uporabniško ime vas bo program preusmeril na začetno stran.
+</p>
+<h5><b>Naslov</b></h5>
+<p>
+    S klikom na naslov <i>Koledar</i> vas program preusmeri na začetno stran.
+</p>
+<h5><b>Datum</b></h5>
+<p>
+    V vrstici, posebej namenjeni datumu, se vam na levi izpiše odprti datum, da desni pa s klikom na ikono izbirate med
+    datumi, v katere bi radi beležili podatke. Ne pozabite
+    potrditi izbire datuma, s klikom na gumb <i>Izberi</i>.
+</p>
+<h5><b>Izbira med obveznostmi dneva in dnevnikom</b></h5>
+<p>
+    Za posamezen datum lahko ločeno pišete obveznosti dneva ter dnevnik. Ob odprtju programa je privzeto, da so
+    obveznosti
+    dneva že odprte. Če želite odpreti dnevnik kliknite na gumb <i>Dnevnik</i>
+</p>
+<h5><b>Obveznosti dneva</b></h5>
+<p>
+    Za beleženje obveznosti dneva morate nujno dodati spisek s poljubnim imenom.
+    V vrstico s spiski ne morate dodajati praznih spiskov ali spiskov, ki za izbran datum že obstajajo.
+    Med spiski prehajate s klikom na imena spiskov. Odprt/aktualni spisek je tisti, katerega gumb je obarvan v črno.
+    Ko spisek uspešno dodate, se vam prikaže gumb <i>Dodaj nov dogodek/opravilo/načrt</i>:
+    <img src="/img/spiski.png" width="80%" style="display: block ;margin-left: auto; margin-right: auto;">
+    <br>
+    S klikom na slednji gumb se bo
+    odprl obrazec, v katerega napišete ime ter opis dogodka/opravila/načrta. Ime je obvezno, opis pa ne. S pritiskom na
+    gumb
+    <i>Dodaj</i> boste dodali nov dogodek/opravilo/načrt.
+    <img src="/img/opravilo.png" width="65%" style="display: block ;margin-left: auto; margin-right: auto;">
+    Dodane dogodke/opravila/načrte je mogoče tudi izbrisati, s klikom na ikono
+    <svg xmlns="http://www.w3.org/2000/svg" height="14" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+        <path
+            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+        <path fill-rule="evenodd"
+            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+    </svg>
+    , na desni strani opravila.
+    Prav tako lahko brišete tudi celotne spiske, s pritiskom na gumb <i>Izbriši aktualni spisek 'ime'</i>.
+    <br>
+    Obveznosti dneva lahko zaprete s klikom na gumb <i>Obveznosti dneva</i>.
+</p>
+<h5><b>Dnevnik</b></h5>
+<img src="/img/dnevniski_zapis.png" width="80%" style="display: block ;margin-left: auto; margin-right: auto;">
+<br>
+<p>
+    S klikom na gumb <i>Dnevnik</i> se vam bo odprlo polje, v katerega lahko pišete poljubno besedilo. Ne pozabite
+    shraniti
+    napisanega, s klikom na gumb <i>Shrani dnevniški zapis</i>. Besedilo v dnevniku lahko poljubnokrat popravite in
+    dodate.
 </p>

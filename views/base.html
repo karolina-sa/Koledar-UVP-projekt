@@ -13,10 +13,11 @@
 </head>
 
 <body
-    style="width: 80%; margin: auto; font-family: Optima; font-size: medium; min-height: 100vh; display: flex; flex-direction: column;">
+    style="width: 80%; margin: auto; text-align: justify; font-family: Optima; font-size: medium; min-height: 100vh; display: flex; flex-direction: column;">
 
+    <!-- NAVBAR: -->
     <nav class="navbar sticky-top navbar-light bg-light rounded">
-        <div  style="margin-left: 1%;">
+        <div style="margin-left: 1%;">
             <table>
                 <tr>
                     <td>
@@ -26,19 +27,26 @@
                     </td>
                     % if defined('uporabnik'):
                     <td>
-                        <a class="nav-link" href="/" style="color: black;">Uporabniško ime: <b style="font-size: x-large;">{{uporabnik.uporabnisko_ime}}</b></a>
+                        <a class="nav-link" href="/" style="color: black;">Uporabniško ime: <b
+                                style="font-size: x-large;">{{uporabnik.uporabnisko_ime}}</b></a>
                     </td>
                     % else: pass
                     % end
                 </tr>
             </table>
         </div>
-        <div>
+        <div style="margin-right: 1%;">
             <table>
                 <tr>
+                    % if not defined('uporabnik'):
                     <td>
-                        <a class="nav-link" href="/opis-programa/" style="color: black;">Opis programa</a>
+                        <a class="nav-link" href="/opis-programa-NE/" style="color: black;">O programu</a>
                     </td>
+                    % else:
+                    <td>
+                        <a class="nav-link" href="/opis-programa-DA/" style="color: black;">O programu</a>
+                    </td>
+                    % end
                     % if not defined('uporabnik'):
                     <td>
                         <a class="nav-link" href="/registracija/" style="color: black;">Registracija</a>
@@ -49,7 +57,8 @@
                     % else:
                     <td>
                         <form method="POST" action="/odjava/">
-                            <button>Odjava</button>
+                            <button class="btn btn-link"
+                                style="color: black; text-decoration: none; box-shadow: none; outline: 0;">Odjava</button>
                         </form>
                     </td>
                     % end
@@ -75,6 +84,7 @@
 
     {{!base}}
 
+    <!-- FOOTER: -->
     <footer class="footer" style="margin-top: auto;">
         <div class="text-center p-3">
             <a class="nevbar-item" href="https://github.com/karolina-sa" style="color: black;">

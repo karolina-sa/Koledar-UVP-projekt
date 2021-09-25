@@ -1,7 +1,8 @@
 % rebase('base.html')
 
 <!-- Zapis datuma: -->
-% slovar_datumi = {'01': 'januar', '02': 'februar', '03': 'marec', '04': 'april', '05': 'maj', '06': 'junij', '07':'julij', '08': 'avgust', '09': 'september', '10': 'oktober', '11': 'november', '12': 'december'}
+% slovar_datumi = {'01': 'januar', '02': 'februar', '03': 'marec', '04': 'april', '05': 'maj', '06': 'junij',
+'07':'julij', '08': 'avgust', '09': 'september', '10': 'oktober', '11': 'november', '12': 'december'}
 % seznam = aktualni_datum.split('-')
 % leto = seznam[0]
 % mesec = slovar_datumi[seznam[1]]
@@ -37,7 +38,6 @@
         </tr>
     </table>
 </div><br>
-
 
 <!-- IZBIRA MED OBVEZNOSTMI IN DNEVNIKOM: -->
 <div id="myGroup">
@@ -83,7 +83,8 @@
                             <form method="POST" action="/dodaj-spisek/" class="d-flex">
                                 <td>
                                     <input type="text" class="form-control" name="ime"
-                                        style="box-shadow: none; outline: none; border: 1px solid #ccc" placeholder="Ime novega spiska">
+                                        style="box-shadow: none; outline: none; border: 1px solid #ccc"
+                                        placeholder="Ime novega spiska">
                                 </td>
                                 <td>
                                     <button class="btn btn-outline-dark">Dodaj</button>
@@ -92,7 +93,8 @@
                             <td>
                                 <!-- izbris spiska: -->
                                 % if aktualni_spisek:
-                                <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#izbris">Izbriši aktualni
+                                <button type="button" class="btn btn-outline-dark" data-toggle="modal"
+                                    data-target="#izbris">Izbriši aktualni
                                     spisek
                                     <b>{{aktualni_spisek.ime}}</b></button>
                                 <!-- Modal za izbris -->
@@ -100,12 +102,15 @@
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h3 class="modal-title">Izbris spiska <b>{{aktualni_spisek.ime}}</b></h3>
+                                                <h3 class="modal-title">Izbris spiska <b>{{aktualni_spisek.ime}}</b>
+                                                </h3>
                                                 <button type="button" class="btn-close" data-dismiss="modal"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <p>Ste prepričani, da želite izbrisati spisek <b>{{aktualni_spisek.ime}}</b>
-                                                ter pripadajoče dogodke/opravila/načrte?</p>
+                                                <p>Ste prepričani, da želite izbrisati spisek
+                                                    <b>{{aktualni_spisek.ime}}</b>
+                                                    ter pripadajoče dogodke/opravila/načrte?
+                                                </p>
                                             </div>
                                             <div class="modal-footer">
                                                 <form method="POST" action="/izbrisi-spisek/">
@@ -119,18 +124,19 @@
                                 % end
                             </td>
                         </tr>
-                        </table>
-                        </div>
-                        </nav>
-                        
-                        % if aktualni_spisek:
-                        
-                        <!-- Modal za opravila: -->
-                        <div class="container mt-5">
-                            <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#opravila">Dodaj nov
-                                dogodek/opravilo/načrt</button>
-                            <div class="modal" id="opravila">
-                                <div class="modal-dialog">
+                    </table>
+                </div>
+            </nav>
+
+            % if aktualni_spisek:
+
+            <!-- Modal za opravila: -->
+            <div class="container mt-5">
+                <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal"
+                    data-bs-target="#opravila">Dodaj nov
+                    dogodek/opravilo/načrt</button>
+                <div class="modal" id="opravila">
+                    <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h3 class="modal-title">Nov dogodek/opravilo/načrt</h3>
