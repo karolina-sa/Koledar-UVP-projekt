@@ -174,12 +174,12 @@ def zamenjaj_aktualni_spisek():
 
 # DRUGO:
 
-@bottle.get('/opis-programa-DA/')
+@bottle.get('/opis-programa-prijavljen/')
 def opis_programa_get():
     uporabnik = trenutni_uporabnik()
     return bottle.template('opis_programa.html', uporabnik=uporabnik)
 
-@bottle.get('/opis-programa-NE/')
+@bottle.get('/opis-programa/')
 def opis_programa_get():
     return bottle.template('opis_programa.html')
 
