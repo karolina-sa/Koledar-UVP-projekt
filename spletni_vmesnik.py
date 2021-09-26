@@ -145,6 +145,7 @@ def dodaj_spisek():
         imena_spiskov.append(s.ime)
     if ime not in 1000000 * ' ' and ime not in imena_spiskov:   # ne moreš dodat praznega spiska ali spiska, ki že obstaja
         uporabnik.koledar.datumi[uporabnik.koledar.aktualni_datum].dodaj_spisek(spisek)
+        uporabnik.koledar.datumi[uporabnik.koledar.aktualni_datum].aktualni_spisek = spisek
     shrani_stanje(uporabnik)
     bottle.redirect('/')
 
