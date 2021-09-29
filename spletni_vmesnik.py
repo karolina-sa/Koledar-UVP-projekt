@@ -1,6 +1,7 @@
 import bottle
 from model import Uporabnik, Koledar, Stanje, Spisek, Opravilo
 
+
 PISKOTEK_UPORABNISKO_IME = "uporabnisko_ime"
 SKRIVNOST = "to je ena skrivnost"
 
@@ -20,7 +21,6 @@ def podatki_uporabnika(uporabnisko_ime):
         return Uporabnik.preberi_iz_datoteke(uporabnisko_ime)
     except FileNotFoundError:
         bottle.redirect("/prijava/")
-
 
 @bottle.get('/registracija/')
 def registracija_get():
@@ -44,7 +44,6 @@ def registracija_post():
         except ValueError:
             return bottle.template("registracija.html", napaka="Uporabniško ime je že zasedeno.")
 
-
 @bottle.get('/prijava/')
 def prijava_get():
     return bottle.template("prijava.html", napaka=None)
@@ -67,7 +66,9 @@ def odjava():
     bottle.response.delete_cookie(PISKOTEK_UPORABNISKO_IME, path="/")
     bottle.redirect("/")
 
+
 #========================================================================================================================
+
 
 @bottle.get('/')
 def osnovna_stran():
@@ -171,7 +172,9 @@ def zamenjaj_aktualni_spisek():
     shrani_stanje(uporabnik)
     bottle.redirect("/")
 
+
 #========================================================================================================================
+
 
 # DRUGO:
 
@@ -187,6 +190,7 @@ def opis_programa_get():
 @bottle.get('/img/<picture>')
 def serve_pictures(picture):    # ker bottle nima za slike
     return bottle.static_file(picture, root='img')
+
 
 #========================================================================================================================
 

@@ -122,7 +122,7 @@ class Stanje:
         if not self.aktualni_spisek:
             self.aktualni_spisek = spisek
     
-    def izbrisi_spisek(self, spisek):        # !!!!!!
+    def izbrisi_spisek(self, spisek):
         self.spiski.remove(spisek)
     
     def dodaj_opravilo(self, opravilo):

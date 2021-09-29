@@ -1,19 +1,23 @@
 % rebase('base.html')
+
+<h4>
+    <b>KRATEK OPIS</b>
+</h4>
 <p>
-    Avtor: Karolina Šavli
-    <br><br>
     Koledar je program, ki omogoča beleženje opravil ter dnevnika po dnevih.
     Ideja izvira iz dveh vsakodnevnih rutin, jutranjega pisanja seznama obveznosti ter večernega beleženja dnevnika.
-    V programu sem se odločila združiti obe, saj je kdaj bolj priročno in hitreje pisati na računalnik, kot pa na list papirja.
-    Prav tako pa lahko do svojih, shranjenih podatkov dostopamo kjerkoli preko svojega uporabniškega imena in gesla, kar omogoča
-    hkratno, varno uporabo programa večjemu številu ljudi in ne zgolj posameznuku.
+    V programu sem se odločila združiti obe, saj je kdaj bolj priročno in hitreje pisati na računalnik, kot pa na list
+    papirja.
+    Prav tako pa lahko do svojih, shranjenih podatkov dostopamo kjerkoli preko svojega uporabniškega imena in gesla, kar
+    omogoča
+    hkratno, varno uporabo programa večjemu številu ljudi in ne zgolj enemu posameznuku.
 </p>
 <br>
 <h4>
     <b>UPORABA</b>
 </h4>
-<p>Za uporabo programa se je nujno potrebno registrirati. Uporabniškega imena ter gesla se po
-    registraciji ne more spremeniti. Ko ste enkrat registriran uporabnik, se je ob odprtju potrebno zgolj prijaviti.<br>
+<p>Za uporabo programa se je nujno potrebno registrirati. Zapomnite si uporabniško ime ter geslo, saj se ju po
+    registraciji ne more spremeniti! Ko ste enkrat registriran uporabnik, se je ob odprtju potrebno zgolj prijaviti.
     Ob prvi prijavi se vam bo prikazala začetna stran, podobna sledeči:
 </p>
 <img src="/img/zacetna_stran.png" width="80%" style="display: block ;margin-left: auto; margin-right: auto;">
@@ -30,10 +34,11 @@
 </p>
 <h5><b>Datum</b></h5>
 <p>
-    V vrstici, posebej namenjeni datumu, se vam na levi izpiše odprti datum, da desni pa s klikom na ikono 
+    V vrstici, posebej namenjeni datumu, se vam na levi izpiše odprti datum, da desni pa s klikom na ikono
     <svg xmlns="http://www.w3.org/2000/svg" height="14" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
-        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-      </svg>
+        <path
+            d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
+    </svg>
     izbirate med
     datumi, v katere bi radi beležili podatke. Ne pozabite
     potrditi izbire datuma, s klikom na gumb <i>Izberi</i>.
@@ -42,11 +47,11 @@
 <p>
     Za posamezen datum lahko ločeno pišete obveznosti dneva ter dnevnik. Ob odprtju programa je privzeto, da so
     obveznosti
-    dneva že odprte. Če želite odpreti dnevnik kliknite na gumb <i>Dnevnik</i>. 
+    dneva že odprte. Če želite odpreti dnevnik kliknite na gumb <i>Dnevnik</i>.
 </p>
 <h5><b>Obveznosti dneva</b></h5>
 <p>
-    Za beleženje obveznosti dneva morate nujno dodati spisek s poljubnim imenom.
+    Za beleženje obveznosti dneva morate nujno dodati spisek s poljubnim imenom (npr. Spisek 1, Spisek 2).
     V vrstico s spiski ne morate dodajati praznih spiskov ali spiskov, ki za izbran datum že obstajajo.
     Med spiski prehajate s klikom na imena spiskov. Odprt/aktualni spisek je tisti, katerega gumb je obarvan v črno.
     Ko spisek uspešno dodate, se vam prikaže gumb <i>Dodaj nov dogodek/opravilo/načrt</i>:
@@ -56,7 +61,7 @@
     odprl obrazec, v katerega napišete ime ter opis dogodka/opravila/načrta. Ime je obvezno, opis pa ne. S pritiskom na
     gumb
     <i>Dodaj</i> boste dodali nov dogodek/opravilo/načrt.
-    Dodane dogodke/opravila/načrte je mogoče tudi izbrisati, s klikom na ikono
+    Dodane dogodke/opravila/načrte, ki se izpišejo pod spiski, je mogoče tudi izbrisati, s klikom na ikono
     <svg xmlns="http://www.w3.org/2000/svg" height="14" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
         <path
             d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
@@ -71,7 +76,9 @@
 <img src="/img/dnevniski_zapis.png" width="80%" style="display: block ;margin-left: auto; margin-right: auto;">
 <br>
 <p>
-    S klikom na gumb <i>Dnevnik</i> se vam bo odprlo polje, v katerega lahko pišete poljubno besedilo. 
-    Ne pozabite shraniti napisanega, s klikom na gumb <i>Shrani dnevniški zapis</i>. 
+    S klikom na gumb <i>Dnevnik</i> se vam bo odprlo polje, v katerega lahko pišete poljubno besedilo.
+    Ne pozabite shraniti napisanega, s klikom na gumb <i>Shrani dnevniški zapis</i>. Ko shranite dnevnik, vas bo
+    program preusmeril na začetno stran.
     Besedilo v dnevniku lahko poljubnokrat popravite in dodate.
 </p>
+<br><br>
