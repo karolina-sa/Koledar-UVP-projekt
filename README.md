@@ -1,7 +1,7 @@
 # KOLEDAR: koledar obveznosti & dnevnik
 **Avtor: Karolina Šavli**
 
-Program Koledar je nastal kot obvezni izdelek pri predmetu Uvod v programiranje v prvem letniku študija Finančne matematike na [Falulteti za matematiko in fiziko](https://www.fmf.uni-lj.si/sl/). Program omogoča beleženje opravil ter dnevnika po dnevih: v programu izberete poljuben datum, na katerega posebej pišete dnevnik ter opravila. Opravila dneva so zasnovana kot seznam spiskov, pod katere dodajate načrte/dogodke/opravila. Opravila ter spiske lahko tudi brišete, dnevnik pa dopolnjujete. 
+Program Koledar je obvezni izdelek pri predmetu Uvod v programiranje v prvem letniku študija Finančne matematike na [Falulteti za matematiko in fiziko](https://www.fmf.uni-lj.si/sl/). Omogoča beleženje opravil ter dnevnika po dnevih: v programu izberete poljuben datum, na katerega posebej pišete dnevnik ter opravila. Opravila dneva so zasnovana kot seznam spiskov, pod katere dodajate načrte/dogodke/opravila. Opravila ter spiske lahko tudi brišete, dnevnik pa dopolnjujete. 
 
 Ideja programa izvira iz dveh vsakodnevnih rutin, jutranjega pisanja seznama obveznosti ter večernega beleženja dnevnika. V programu sem se odločila združiti obe, saj je kdaj bolj priročno in hitreje pisati na računalnik, kot na list papirja. Program prav tako vsebuje spletno storitev, ki omogoča varno shranjevanje podatkov, preko uporabniškega imena in gesla, večjemu številu ljudi in ne zgolj enemu posameznuku.
 
