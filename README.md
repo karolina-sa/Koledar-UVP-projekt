@@ -8,10 +8,10 @@ Ideja programa izvira iz dveh vsakodnevnih rutin, jutranjega pisanja seznama obv
 Pri pisanju programa sta prišla v veliko pomoč in inspiracijo projekta [kuverte](https://github.com/matijapretnar/uvod-v-programiranje/tree/master/projekti/kuverte) in [opravila](https://github.com/matijapretnar/uvod-v-programiranje/tree/master/projekti/opravila). Funkcije programa so napisane v programskem jeziku [Python](https://www.python.org/), s pomočjo [knjižnice Bottle](https://bottlepy.org/docs/dev/). Za estetski prikaz programa pa je bilo uporabljeno ogrodje [Bootstrap](https://getbootstrap.com/).
 
 ## Uporaba
-Projekt lahko prenesete s klikom na **Code** ter nato **Download ZIP** na [GitHub repozitoriju](https://github.com/karolina-sa/Koledar-UVP-projekt) ali pa preko ukaznega poziva z ukazom: <br/>
+Projekt lahko prenesete s klikom na **Code** ter nato **Download ZIP** na [GitHub repozitoriju](https://github.com/karolina-sa/Koledar-UVP-projekt) ali pa preko Ukaznega poziva z ukazom: <br/>
 `git clone "https://github.com/karolina-sa/Koledar-UVP-projekt"`.
 
-Nato zaženete datoteko **spletni_vmesnik.py** ter kliknite na hiperpovezavo, ki se prikaže v terminalu. Program se lahko zažene tudi preko ukaznega poziva. V brskalniku se bo odprl program, natančneje polje za prijavo. 
+Nato zaženete datoteko **spletni_vmesnik.py** ter kliknite na hiperpovezavo, ki se prikaže v terminalu. Program se lahko zažene tudi preko Ukaznega poziva. V brskalniku se bo odprl program, natančneje polje za prijavo. 
 Če niste registriran uporabnik, se morate pred uporabo nujno registrirati s klikom na povezavo do registracije, ki jo najdete v navigacijski vrtici, na vrhu zaslona. Za natančenjši opis uporabe programa kliknite na povezavo **O programu**, ki jo prav tako najdete v navigacijski vrstici. 
 
 ## Opozorila
