@@ -28,13 +28,11 @@ def registracija_get():
 
 @bottle.post("/registracija/")
 def registracija_post():
-    uporabnisko_ime = bottle.request.forms.getunicode("uporabnisko_ime")
+    uporabnisko_ime = bottle.request.forms.getunicode("uporabnisko_ime").replace(' ', '_')
     geslo_v_cistopisu = bottle.request.forms.getunicode("geslo")
-    if geslo_v_cistopisu in 1000000 * ' ' or uporabnisko_ime in 1000000 * ' ':
+    if geslo_v_cistopisu in 1000000 * ' ' or uporabnisko_ime in 1000000 * '_':
         return bottle.template("registracija.html", napaka="Uporabniško ime in geslo ne smeta biti prazna niza.")
     else:
-        if not uporabnisko_ime:
-            return bottle.template("registracija.html", napaka="Vnesite uporabniško ime.")
         try:
             Uporabnik.registracija(uporabnisko_ime, geslo_v_cistopisu)
             bottle.response.set_cookie(
@@ -50,10 +48,10 @@ def prijava_get():
 
 @bottle.post('/prijava/')
 def prijava_post():
-    uporabnisko_ime = bottle.request.forms.getunicode("uporabnisko_ime")
+    uporabnisko_ime = bottle.request.forms.getunicode("uporabnisko_ime").replace(' ', '_')
     geslo_v_cistopisu = bottle.request.forms.getunicode("geslo")
     if not uporabnisko_ime:
-        return bottle.template("prijava.html", napaka="Vnesi uporabniško ime.")
+        return bottle.template("prijava.html", napaka="Vnesite uporabniško ime.")
     try:
         Uporabnik.prijava(uporabnisko_ime, geslo_v_cistopisu)
         bottle.response.set_cookie(PISKOTEK_UPORABNISKO_IME, uporabnisko_ime, path="/", secret=SKRIVNOST)
